@@ -1,5 +1,5 @@
 // ✅ Supabase 설정 - 본인 프로젝트 값으로 교체하세요
 const APP_CONFIG = {
-  SUPABASE_URL: "https://gatxogfdfsyoyqeirioj.supabase.co",
+  SUPABASE_URL: "https://gatxogfdfsycyqeirioj.supabase.co",
   SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdhdHhvZ2ZkZnN5b3lxZWlyaW9qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3NDkzMTQsImV4cCI6MjA4ODMyNTMxNH0._MuKgp1nnuJY68uN4AYyzgupbKaaVeD86S3C07OTsOor"
 };
