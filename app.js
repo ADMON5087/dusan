@@ -158,14 +158,14 @@ function render(data) {
     MEMBERS.forEach(m => {
       const diff = (scores[m.id] || 0) - (prevScores[m.id] || 0);
       if (diff >= 500) {
-        showBighand(m.label, '⭐ +' + formatNumber(diff) + '개 별풍선 투척!', 4000);
+        showBighand(m.label, '⭐ +' + formatNumber(diff) + '개 별풍선  투척!', 4000);
         makeConfetti(40);
       }
     });
     // 큰손 (하두링 500개+)
     const leftDiff = leftScore - (prevScores[LEFT_ID] || 0);
     if (leftDiff >= 500) {
-      showBighand(leftName, '⭐ +' + formatNumber(leftDiff) + '개 별풍선 투척!', 4000);
+      showBighand(leftName, '⭐ +' + formatNumber(leftDiff) + '개 별풍선  투척!', 4000);
       makeConfetti(40);
     }
 
@@ -173,17 +173,17 @@ function render(data) {
     MEMBERS.forEach(m => {
       const diff = (scores[m.id] || 0) - (prevScores[m.id] || 0);
       if (diff >= 500) {
-        document.getElementById('bsLabel').textContent  = '🎉 500개 이상 투척!';
+        document.getElementById('bsLabel').textContent  = '🎉 500개 이상  투척!';
         document.getElementById('bsName').textContent   = m.label + '님';
-        document.getElementById('bsAmount').textContent = '⭐ +' + formatNumber(diff) + '개 투척!';
+        document.getElementById('bsAmount').textContent = '⭐ +' + formatNumber(diff) + '개  투척!';
         showPopup('bigSupportPopup', 4500);
         makeConfetti(50);
       }
     });
     if (leftDiff >= 500) {
-      document.getElementById('bsLabel').textContent  = '🎉 500개 이상 투척!';
+      document.getElementById('bsLabel').textContent  = '🎉 500개 이상  투척!';
       document.getElementById('bsName').textContent   = leftName + '님';
-      document.getElementById('bsAmount').textContent = '⭐ +' + formatNumber(leftDiff) + '개 투척!';
+      document.getElementById('bsAmount').textContent = '⭐ +' + formatNumber(leftDiff) + '개  투척!';
       showPopup('bigSupportPopup', 4500);
       makeConfetti(50);
     }
