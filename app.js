@@ -1,4 +1,4 @@
-// app.js - SOOP Balloon Battle v4 메인 로직
+// app.js - SOOP Balloon Battle v4 메인 로직 (뉴모피즘 라이트 테마)
 
 const sbClient = window.supabase.createClient(
   APP_CONFIG.SUPABASE_URL,
@@ -46,7 +46,22 @@ function animateNumber(el, from, to, duration = 450) {
   requestAnimationFrame(step);
 }
 
-function showPopup(id, duration = 3000) {
+// 큰손 팝업 (flex 행 안에 내장) show/hide
+function showBighand(name, amount, duration = 4000) {
+  const el = document.getElementById('bighandPopup');
+  if (!el) return;
+  document.getElementById('bhName').textContent   = name;
+  document.getElementById('bhAmount').textContent = amount;
+  el.classList.add('popup-show');
+  el.style.display = 'block';
+  setTimeout(() => {
+    el.classList.remove('popup-show');
+    el.style.display = 'none';
+  }, duration);
+}
+
+// 오버레이 팝업 (500개+, 1만개) show/hide
+function showPopup(id, duration = 4000) {
   const el = document.getElementById(id);
   if (!el) return;
   el.style.display = 'flex';
@@ -55,7 +70,7 @@ function showPopup(id, duration = 3000) {
   el.classList.add('popup-show');
   setTimeout(() => {
     el.classList.remove('popup-show');
-    setTimeout(() => { el.style.display = 'none'; }, 400);
+    el.style.display = 'none';
   }, duration);
 }
 
@@ -63,7 +78,7 @@ function makeConfetti(count = 30) {
   const layer = document.getElementById('confettiLayer');
   if (!layer) return;
   layer.innerHTML = '';
-  const colors = ['#ff2e63','#ffd700','#00c2ff','#7fff7f','#ff8c00','#ff69b4'];
+  const colors = ['#d02870','#ffd700','#3a5fdf','#7fff7f','#ff8c00','#ff69b4'];
   for (let i = 0; i < count; i++) {
     const dot = document.createElement('div');
     dot.className = 'confetti-dot';
@@ -86,17 +101,19 @@ function makeConfetti(count = 30) {
 function render(data) {
   if (!data) return;
 
-  const scores = data.scores || {};
+  const scores     = data.scores || {};
   const leftScore  = scores[LEFT_ID] || 0;
   const rightScore = MEMBERS.reduce((s, m) => s + (scores[m.id] || 0), 0);
   const total      = leftScore + rightScore;
-  const leftPct    = total > 0 ? Math.round(leftScore / total * 1000) / 10 : 50;
+  const leftPct    = total > 0 ? Math.round(leftScore  / total * 1000) / 10 : 50;
   const rightPct   = total > 0 ? Math.round(rightScore / total * 1000) / 10 : 50;
 
+  const leftName = data.left_label || LEFT_LABEL;
+
   // 타이틀
-  document.getElementById('title').textContent    = data.title    || '풍선 배틀';
-  document.getElementById('subtitle').textContent = data.subtitle || '';
-  document.getElementById('leftLabel').textContent = data.left_label || LEFT_LABEL;
+  document.getElementById('title').textContent    = data.title    || '갈없녀 두산CK';
+  document.getElementById('subtitle').textContent = data.subtitle || '🏔️ 누적 10만개 달성시 장가계';
+  document.getElementById('leftLabel').textContent = leftName;
 
   // 점수 애니메이션
   const leftEl  = document.getElementById('leftScore');
@@ -107,80 +124,112 @@ function render(data) {
   // VS 게이지
   document.getElementById('gaugeLeft').style.width  = leftPct  + '%';
   document.getElementById('gaugeRight').style.width = rightPct + '%';
-  document.getElementById('leftPct').textContent    = (data.left_label || LEFT_LABEL) + ' ' + leftPct + '%';
+  document.getElementById('leftPct').textContent    = leftName + ' ' + leftPct + '%';
   document.getElementById('rightPct').textContent   = '멤버들 ' + rightPct + '%';
 
   // 위너 카드
-  const leader     = leftScore >= rightScore ? (data.left_label || LEFT_LABEL) : '멤버들 총합';
-  const leaderScore = Math.max(leftScore, rightScore);
-  const gap        = Math.abs(leftScore - rightScore);
+  const isLeftLeading = leftScore >= rightScore;
+  const leader        = isLeftLeading ? leftName : '멤버들 총합';
+  const gap           = Math.abs(leftScore - rightScore);
+  const gapEl         = document.getElementById('winnerGap');
+
   document.getElementById('winnerName').textContent = leader;
-  document.getElementById('winnerGap').textContent  =
-    gap === 0 ? '동점!' :
-    (leftScore > rightScore
-      ? '멤버들보다 +' + formatNumber(gap) + ' 앞서는 중'
-      : (data.left_label || LEFT_LABEL) + '보다 +' + formatNumber(gap) + ' 앞서는 중');
+
+  if (gap === 0) {
+    gapEl.textContent = '동점!';
+    gapEl.className   = 'winner-gap';
+  } else if (isLeftLeading) {
+    // 하두링 선두 → 파란 색
+    gapEl.textContent = '멤버들보다 +' + formatNumber(gap) + ' 앞서는 중';
+    gapEl.className   = 'winner-gap haduring-lead';
+  } else {
+    // 멤버 선두 → 핑크 색
+    gapEl.textContent = leftName + '보다 +' + formatNumber(gap) + ' 앞서는 중';
+    gapEl.className   = 'winner-gap';
+  }
 
   // 랭킹 렌더
   renderRanking(scores, data);
 
-  // ── 이벤트 감지 (prevScores와 비교) ──
+  // ── 이벤트 감지 ──
   if (Object.keys(prevScores).length > 0) {
 
-    // BIG SUPPORT (+500 이상 한번에)
+    // 큰손 (멤버 500개+ 투척)
     MEMBERS.forEach(m => {
       const diff = (scores[m.id] || 0) - (prevScores[m.id] || 0);
       if (diff >= 500) {
-        document.getElementById('bsName').textContent   = m.label;
-        document.getElementById('bsAmount').textContent = '+' + formatNumber(diff) + ' 🎈';
-        showPopup('bigSupportPopup', 3500);
+        showBighand(m.label, '⭐ +' + formatNumber(diff) + '개 별풍선 투척!', 4000);
         makeConfetti(40);
       }
     });
+    // 큰손 (하두링 500개+)
     const leftDiff = leftScore - (prevScores[LEFT_ID] || 0);
     if (leftDiff >= 500) {
-      document.getElementById('bsName').textContent   = data.left_label || LEFT_LABEL;
-      document.getElementById('bsAmount').textContent = '+' + formatNumber(leftDiff) + ' 🎈';
-      showPopup('bigSupportPopup', 3500);
+      showBighand(leftName, '⭐ +' + formatNumber(leftDiff) + '개 별풍선 투척!', 4000);
       makeConfetti(40);
     }
 
-    // MILESTONE (1만 단위)
-    const allPlayers = [{ id: LEFT_ID, label: data.left_label || LEFT_LABEL }, ...MEMBERS];
+    // 500개+ 오버레이 팝업 (별도 대형 팝업)
+    MEMBERS.forEach(m => {
+      const diff = (scores[m.id] || 0) - (prevScores[m.id] || 0);
+      if (diff >= 500) {
+        document.getElementById('bsLabel').textContent  = '🎉 500개 이상 투척!';
+        document.getElementById('bsName').textContent   = m.label + '님';
+        document.getElementById('bsAmount').textContent = '⭐ ' + formatNumber(diff) + '개 돌파!';
+        showPopup('bigSupportPopup', 4500);
+        makeConfetti(50);
+      }
+    });
+    if (leftDiff >= 500) {
+      document.getElementById('bsLabel').textContent  = '🎉 500개 이상 투척!';
+      document.getElementById('bsName').textContent   = leftName + '님';
+      document.getElementById('bsAmount').textContent = '⭐ ' + formatNumber(leftDiff) + '개 돌파!';
+      showPopup('bigSupportPopup', 4500);
+      makeConfetti(50);
+    }
+
+    // MILESTONE (1만 단위 돌파)
+    const allPlayers = [{ id: LEFT_ID, label: leftName }, ...MEMBERS];
     allPlayers.forEach(p => {
-      const prev = prevScores[p.id] || 0;
-      const curr = scores[p.id]    || 0;
-      const prevMile = Math.floor(prev / 10000);
-      const currMile = Math.floor(curr / 10000);
+      const prev      = prevScores[p.id] || 0;
+      const curr      = scores[p.id]     || 0;
+      const prevMile  = Math.floor(prev / 10000);
+      const currMile  = Math.floor(curr / 10000);
       if (currMile > prevMile && currMile > (milestones[p.id] || 0)) {
         milestones[p.id] = currMile;
-        document.getElementById('msName').textContent  = p.label;
-        document.getElementById('msValue').textContent = formatNumber(currMile * 10000) + '개 달성! 🎊';
-        showPopup('milestonePopup', 3500);
-        makeConfetti(50);
+        document.getElementById('msLabel').textContent = '🏔️ 누적 ' + formatNumber(currMile) + '만개 돌파!';
+        document.getElementById('msValue').textContent = p.label + ' · 목표까지 남은 ' + formatNumber(100000 - curr) + '개!';
+        showPopup('milestonePopup', 4500);
+        makeConfetti(60);
       }
     });
 
     // LEAD CHANGE
-    const currentLeader = leftScore >= rightScore ? 'left' : 'right';
+    const currentLeader = isLeftLeading ? 'left' : 'right';
     if (prevLeader && prevLeader !== currentLeader) {
-      const newLeaderName = currentLeader === 'left' ? (data.left_label || LEFT_LABEL) : '멤버들 총합';
-      document.getElementById('lcName').textContent = newLeaderName;
+      document.getElementById('lcName').textContent = leader;
       showPopup('leadChangePopup', 3000);
-      document.getElementById('winnerCard').classList.add('flash-card');
-      setTimeout(() => document.getElementById('winnerCard').classList.remove('flash-card'), 1000);
+      const wc = document.getElementById('winnerCard');
+      wc.classList.add('flash-card');
+      setTimeout(() => wc.classList.remove('flash-card'), 1000);
     }
-    prevLeader = currentLeader;
 
-    // SIREN (5분 이상 같은 팀 리드)
-    if (prevLeader === currentLeader) {
+    // SIREN (5분 이상 같은 팀 선두)
+    const currentLeaderKey = currentLeader;
+    if (prevLeader === currentLeaderKey) {
       if (!leaderSince) leaderSince = Date.now();
       if (Date.now() - leaderSince > 5 * 60 * 1000 && !sirenShown) {
         sirenShown = true;
         const sirenBar = document.getElementById('sirenBar');
         const sirenTxt = document.getElementById('sirenText');
-        sirenTxt.textContent = leader + '이(가) 계속 앞서는 중! 분발하세요!';
         sirenBar.style.display = 'block';
+        if (isLeftLeading) {
+          sirenTxt.textContent  = leftName + ' 5분째 선두유지중!';
+          sirenBar.className    = 'siren-bar haduring-lead';
+        } else {
+          sirenTxt.textContent  = '멤버들 5분째 선두유지중!';
+          sirenBar.className    = 'siren-bar member-lead';
+        }
       }
     } else {
       leaderSince = null;
@@ -188,8 +237,10 @@ function render(data) {
       document.getElementById('sirenBar').style.display = 'none';
     }
 
+    prevLeader = currentLeader;
+
   } else {
-    prevLeader = leftScore >= rightScore ? 'left' : 'right';
+    prevLeader = isLeftLeading ? 'left' : 'right';
   }
 
   prevScores = { ...scores };
@@ -198,7 +249,7 @@ function render(data) {
 // ── 랭킹 렌더 ────────────────────────────────────────────
 
 function renderRanking(scores, data) {
-  const list = document.getElementById('rankingList');
+  const list   = document.getElementById('rankingList');
   const sorted = [...MEMBERS].sort((a, b) => (scores[b.id] || 0) - (scores[a.id] || 0));
   const maxScore = Math.max(...sorted.map(m => scores[m.id] || 0), 1);
 
@@ -208,7 +259,6 @@ function renderRanking(scores, data) {
     prevPositions[row.dataset.id] = row.getBoundingClientRect();
   });
 
-  // DOM 재구성
   list.innerHTML = '';
   sorted.forEach((m, i) => {
     const score = scores[m.id] || 0;
@@ -216,18 +266,18 @@ function renderRanking(scores, data) {
     const isMvp = i === 0 && score > 0;
 
     const row = document.createElement('div');
-    row.className = 'rank-row' + (isMvp ? ' mvp' : '');
+    row.className  = 'rank-row' + (isMvp ? ' mvp' : '');
     row.dataset.id = m.id;
-    row.innerHTML = `
-      <div class="rank-badge">${isMvp ? '👑' : i + 1}</div>
+    row.innerHTML  = `
+      <div class="rank-badge">${isMvp ? '1' : i + 1}</div>
+      ${isMvp ? '<span class="mini-tag">MVP</span>' : ''}
       <div class="rank-info">
         <div class="rank-name">${m.label}</div>
         <div class="rank-bar-bg">
           <div class="rank-bar-fill" style="width:${pct}%"></div>
         </div>
       </div>
-      ${isMvp ? '<span class="mini-tag">MVP</span>' : ''}
-      <div class="rank-score">${formatNumber(score)}</div>
+      <div class="rank-score">${formatNumber(score)} ⭐</div>
     `;
     list.appendChild(row);
   });

@@ -1,14 +1,19 @@
 /* ============================================
    SOOP Balloon Battle v4 - styles.css
+   뉴모피즘 라이트 테마 (colA_v3 적용)
    ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html, body {
-  background: transparent;
-  font-family: 'Arial', sans-serif;
-  color: #ffffff;
+  background: #e8ecf0;
+  font-family: 'Noto Sans KR', 'Arial', sans-serif;
+  color: #2d2d3a;
   overflow: hidden;
+  width: 400px;
+  height: 1080px;
 }
 
 /* ── 레이아웃 ── */
@@ -22,48 +27,51 @@ html, body {
 .panel {
   width: 400px;
   height: 1080px;
-  background: linear-gradient(180deg, rgba(10,10,30,0.96) 0%, rgba(5,5,20,0.97) 100%);
-  border-right: 2px solid rgba(100,150,255,0.25);
-  padding: 14px 14px 10px;
+  background: #e8ecf0;
   display: flex;
   flex-direction: column;
-  gap: 9px;
+  padding: 14px 13px;
+  gap: 8px;
   overflow: hidden;
 }
 
+/* ── 뉴모피즘 그림자 ── */
+.nm-out { box-shadow: 5px 5px 13px #c4c8cd, -5px -5px 13px #ffffff; }
+.nm-sm  { box-shadow: 3px 3px 8px  #c4c8cd, -3px -3px 8px  #ffffff; }
+.nm-in  { box-shadow: inset 3px 3px 6px #c4c8cd, inset -3px -3px 6px #ffffff; }
+
 /* ── 타이틀 ── */
 .top-title {
-  text-align: center;
-  padding: 8px 0 6px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
   flex-shrink: 0;
+  text-align: center;
+  padding: 18px 12px 16px;
+  background: #e8ecf0;
+  border-radius: 15px;
 }
 
 .title {
-  font-size: 20px;
-  font-weight: bold;
-  letter-spacing: 1px;
-  background: linear-gradient(90deg, #00c2ff, #ff6b35);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  color: #4a4580;
+  line-height: 1.25;
 }
 
 .subtitle {
-  font-size: 11px;
-  color: rgba(255,255,255,0.6);
-  margin-top: 3px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #7b77aa;
+  margin-top: 5px;
+  line-height: 1.25;
 }
 
 /* ── 위너 카드 ── */
 .winner-card {
-  background: linear-gradient(135deg, rgba(255,100,50,0.2), rgba(255,200,50,0.12));
-  border: 1.5px solid rgba(255,180,50,0.45);
-  border-radius: 10px;
-  padding: 9px 12px;
-  text-align: center;
   flex-shrink: 0;
-  transition: all 0.4s ease;
+  background: #e8ecf0;
+  border-radius: 15px;
+  padding: 18px 16px 16px;
+  text-align: center;
 }
 
 .winner-card.flash-card {
@@ -71,179 +79,206 @@ html, body {
 }
 
 @keyframes flashCard {
-  0%   { background: rgba(255,255,255,0.3); border-color: #fff; }
-  100% { background: linear-gradient(135deg, rgba(255,100,50,0.2), rgba(255,200,50,0.12)); }
+  0%   { box-shadow: 0 0 0 3px #d02870, 5px 5px 13px #c4c8cd, -5px -5px 13px #ffffff; }
+  100% { box-shadow: 5px 5px 13px #c4c8cd, -5px -5px 13px #ffffff; }
 }
 
 .winner-label {
-  font-size: 10px;
-  color: rgba(255,220,100,0.75);
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #7b77aa;
+  letter-spacing: 1.5px;
+  line-height: 1.2;
 }
 
 .winner-name {
-  font-size: 19px;
-  font-weight: bold;
-  color: #ffd700;
-  margin-top: 2px;
+  font-size: 21px;
+  font-weight: 900;
+  color: #4a4580;
+  margin-top: 3px;
+  line-height: 1.25;
 }
 
+/* 격차 텍스트 — 19px 굵고 선명하게 */
 .winner-gap {
-  font-size: 10px;
-  color: rgba(255,255,255,0.55);
-  margin-top: 1px;
+  font-size: 19px;
+  font-weight: 900;
+  color: #c0306a;   /* 멤버 앞설 때 핑크 */
+  margin-top: 5px;
+  letter-spacing: 0.3px;
+  line-height: 1.25;
+}
+
+/* 하두링 앞설 때 파란색 */
+.winner-gap.haduring-lead {
+  color: #3a5fdf;
 }
 
 /* ── 총합 점수 ── */
 .totals-row {
   display: flex;
-  gap: 7px;
+  gap: 10px;
   flex-shrink: 0;
 }
 
 .total-box {
   flex: 1;
-  border-radius: 10px;
-  padding: 9px 10px;
+  border-radius: 14px;
+  padding: 18px 8px 16px;
   text-align: center;
-}
-
-.total-box.left {
-  background: linear-gradient(135deg, rgba(255,46,99,0.28), rgba(255,100,50,0.18));
-  border: 1.5px solid rgba(255,46,99,0.55);
-}
-
-.total-box.right {
-  background: linear-gradient(135deg, rgba(0,194,255,0.28), rgba(0,100,255,0.18));
-  border: 1.5px solid rgba(0,194,255,0.55);
+  background: #e8ecf0;
 }
 
 .total-label {
-  font-size: 10px;
-  color: rgba(255,255,255,0.65);
-  margin-bottom: 3px;
+  font-size: 14px;
+  font-weight: 900;
+  color: #4a4580;
+  margin-bottom: 5px;
+  line-height: 1.2;
 }
 
 .total-score {
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 36px;
+  font-weight: 900;
+  line-height: 1.1;
 }
 
-.total-box.left  .total-score { color: #ff6b6b; }
-.total-box.right .total-score { color: #00c2ff; }
+.total-box.left  .total-score { color: #d02870; }
+.total-box.right .total-score { color: #3a5fdf; }
 
 .total-unit {
-  font-size: 9px;
-  color: rgba(255,255,255,0.4);
+  font-size: 12px;
+  color: #aaa8cc;
+  margin-top: 3px;
+  line-height: 1;
 }
 
 /* ── VS 게이지 ── */
 .gauge-section {
-  background: rgba(255,255,255,0.04);
-  border-radius: 10px;
-  padding: 9px 11px;
   flex-shrink: 0;
+  background: #e8ecf0;
+  border-radius: 14px;
+  padding: 14px 14px;
 }
 
 .gauge-labels {
   display: flex;
   justify-content: space-between;
-  font-size: 10px;
-  margin-bottom: 5px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  line-height: 1.2;
 }
 
-.left-pct  { color: #ff6b6b; }
-.vs-text   { color: rgba(255,255,255,0.45); font-weight: bold; }
-.right-pct { color: #00c2ff; }
+.left-pct  { color: #d02870; }
+.vs-text   { color: #aaa8cc; font-weight: 900; }
+.right-pct { color: #3a5fdf; }
 
 .gauge-bar {
   height: 18px;
-  background: rgba(255,255,255,0.08);
+  background: #dde0e6;
   border-radius: 9px;
   overflow: hidden;
   display: flex;
+  box-shadow: inset 3px 3px 6px #c4c8cd, inset -3px -3px 6px #ffffff;
 }
 
 .gauge-left {
   width: 50%;
-  background: linear-gradient(90deg, #ff2e63, #ff6b35);
+  background: linear-gradient(90deg, #b02060, #d02870);
   border-radius: 9px 0 0 9px;
   transition: width 0.5s ease;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding-right: 5px;
-  font-size: 9px;
-  font-weight: bold;
-  min-width: 20px;
+  min-width: 16px;
 }
 
 .gauge-right {
   width: 50%;
-  background: linear-gradient(90deg, #0055ff, #00c2ff);
+  background: linear-gradient(90deg, #3a5fdf, #5b7fff);
   border-radius: 0 9px 9px 0;
   transition: width 0.5s ease;
-  display: flex;
-  align-items: center;
-  padding-left: 5px;
-  font-size: 9px;
-  font-weight: bold;
-  min-width: 20px;
+  min-width: 16px;
 }
 
 /* ── 랭킹 박스 ── */
 .ranking-box {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.09);
-  border-radius: 10px;
-  padding: 9px 10px;
-  flex: 1;
+  flex: 1;          /* 남은 세로 공간 전부 흡수 */
+  min-height: 0;
+  background: #e8ecf0;
+  border-radius: 15px;
+  padding: 12px 12px 10px;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
 .ranking-title {
-  font-size: 10px;
-  color: rgba(255,255,255,0.45);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 8px;
+  font-size: 15px;
+  font-weight: 900;
+  color: #4a4580;
   text-align: center;
+  margin-bottom: 8px;
+  letter-spacing: 0.8px;
+  line-height: 1.2;
+  flex-shrink: 0;
+}
+
+.rank-rows {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 7px;
+  min-height: 0;
+  padding-bottom: 4px;
 }
 
 .rank-row {
   display: flex;
   align-items: center;
-  gap: 7px;
-  padding: 7px 5px;
-  margin-bottom: 5px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 8px;
-  border: 1px solid rgba(255,255,255,0.07);
-  will-change: transform;
+  gap: 8px;
+  padding: 10px 10px;
+  background: #e8ecf0;
+  border-radius: 10px;
+  flex-shrink: 0;
+  box-shadow: 3px 3px 8px #c4c8cd, -3px -3px 8px #ffffff;
 }
 
 .rank-row.mvp {
-  background: linear-gradient(135deg, rgba(255,200,0,0.13), rgba(255,150,0,0.09));
-  border-color: rgba(255,200,0,0.38);
+  box-shadow: 3px 3px 8px #c4c8cd, -3px -3px 8px #ffffff,
+              inset 0 0 0 2px rgba(208,40,112,0.35);
 }
 
 .rank-badge {
-  width: 22px;
-  height: 22px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.13);
+  background: #e8ecf0;
+  box-shadow: 2px 2px 5px #c4c8cd, -2px -2px 5px #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 10px;
-  font-weight: bold;
+  font-size: 12px;
+  font-weight: 900;
   flex-shrink: 0;
+  color: #6c6899;
 }
 
 .rank-row.mvp .rank-badge {
-  background: linear-gradient(135deg, #ffd700, #ff8c00);
-  color: #000;
+  background: linear-gradient(135deg, #d02870, #b02060);
+  color: #fff;
+  box-shadow: none;
+}
+
+/* MVP 태그: 이름 왼쪽 앞 */
+.mini-tag {
+  font-size: 8px;
+  background: rgba(208,40,112,0.12);
+  border: 1px solid rgba(208,40,112,0.4);
+  color: #d02870;
+  border-radius: 4px;
+  padding: 2px 4px;
+  flex-shrink: 0;
+  font-weight: 700;
 }
 
 .rank-info {
@@ -252,68 +287,121 @@ html, body {
 }
 
 .rank-name {
-  font-size: 13px;
-  font-weight: bold;
+  font-size: 16px;
+  font-weight: 700;
+  color: #2d2d3a;
+  line-height: 1.2;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .rank-bar-bg {
-  height: 4px;
-  background: rgba(255,255,255,0.09);
-  border-radius: 2px;
-  margin-top: 3px;
+  height: 6px;
+  background: #dde0e6;
+  border-radius: 3px;
+  margin-top: 4px;
   overflow: hidden;
+  box-shadow: inset 1px 1px 2px #c4c8cd;
 }
 
 .rank-bar-fill {
   height: 100%;
-  border-radius: 2px;
-  background: linear-gradient(90deg, #ff2e63, #ff8c00);
+  border-radius: 3px;
+  background: linear-gradient(90deg, #b02060, #d02870);
   transition: width 0.5s ease;
 }
 
 .rank-row.mvp .rank-bar-fill {
-  background: linear-gradient(90deg, #ffd700, #ff8c00);
+  background: linear-gradient(90deg, #d02870, #ff6aaa);
 }
 
 .rank-score {
-  font-size: 15px;
-  font-weight: bold;
-  color: #ffffff;
+  font-size: 16px;
+  font-weight: 900;
+  color: #2d2d3a;
   flex-shrink: 0;
 }
 
-.mini-tag {
-  font-size: 8px;
-  background: rgba(0,194,255,0.18);
-  border: 1px solid rgba(0,194,255,0.38);
-  color: #00c2ff;
-  border-radius: 4px;
-  padding: 1px 4px;
+/* ── 큰손 팝업 (랭킹 아래 · 사이렌 바로 위) ── */
+.bighand-popup {
   flex-shrink: 0;
-}
-
-/* ── 사이렌 바 ── */
-.siren-bar {
-  background: linear-gradient(90deg, rgba(255,40,40,0.85), rgba(255,100,0,0.85));
-  padding: 7px;
+  background: linear-gradient(135deg, #d02870, #9a1f55);
+  border-radius: 14px;
+  padding: 15px 14px;
   text-align: center;
+  box-shadow: 4px 4px 14px rgba(176,32,96,0.45);
+  display: none;   /* JS가 show/hide 제어 */
+}
+
+.bighand-popup.popup-show {
+  display: block;
+  animation: popSlide 0.35s cubic-bezier(0.175,0.885,0.32,1.275) forwards;
+}
+
+@keyframes popSlide {
+  0%   { transform: scaleY(0); opacity: 0; transform-origin: top; }
+  70%  { transform: scaleY(1.05); opacity: 1; }
+  100% { transform: scaleY(1); opacity: 1; }
+}
+
+.bh-label {
   font-size: 11px;
-  font-weight: bold;
-  border-radius: 8px;
-  border: 1px solid rgba(255,100,0,0.5);
+  color: rgba(255,255,255,0.85);
+  letter-spacing: 2px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.bh-name {
+  font-size: 20px;
+  font-weight: 900;
+  color: #fff;
+  margin-top: 3px;
+  line-height: 1.2;
+}
+
+.bh-amount {
+  font-size: 13px;
+  color: rgba(255,255,255,0.92);
+  font-weight: 700;
+  margin-top: 3px;
+  line-height: 1.2;
+}
+
+/* ── 사이렌 바 (21px = 1.5×) ── */
+.siren-bar {
   flex-shrink: 0;
+  border-radius: 13px;
+  padding: 18px 12px;
+  text-align: center;
+  font-size: 21px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 0.2px;
+  line-height: 1.2;
+  display: none;   /* JS가 show/hide 제어 */
   animation: sirenBlink 1s infinite;
+}
+
+/* 멤버 선두 → 핑크 */
+.siren-bar.member-lead {
+  background: linear-gradient(90deg, #b02060, #d02870);
+  box-shadow: 3px 3px 10px rgba(176,32,96,0.45);
+}
+
+/* 하두링 선두 → 파랑 */
+.siren-bar.haduring-lead {
+  background: linear-gradient(90deg, #3a5fdf, #5b7fff);
+  box-shadow: 3px 3px 10px rgba(58,95,223,0.45);
 }
 
 @keyframes sirenBlink {
   0%, 100% { opacity: 1; }
-  50%       { opacity: 0.6; }
+  50%       { opacity: 0.65; }
 }
 
-/* ── 팝업 공통 ── */
+/* ── 팝업 공통 (BIG SUPPORT / MILESTONE / LEAD CHANGE) ── */
 .popup {
   position: absolute;
   left: 50%;
@@ -321,15 +409,18 @@ html, body {
   transform: translate(-50%, -50%) scale(0);
   z-index: 200;
   border-radius: 16px;
-  padding: 18px 28px;
+  padding: 22px 28px;
   text-align: center;
+  display: none;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   pointer-events: none;
+  min-width: 280px;
 }
 
 .popup.popup-show {
+  display: flex;
   animation: popShow 0.35s cubic-bezier(0.175,0.885,0.32,1.275) forwards;
 }
 
@@ -339,35 +430,36 @@ html, body {
   100% { transform: translate(-50%,-50%) scale(1); opacity: 1; }
 }
 
-/* BIG SUPPORT */
+/* BIG SUPPORT (500개+) */
 .big-support-popup {
-  background: linear-gradient(135deg, rgba(255,200,0,0.96), rgba(255,100,0,0.92));
-  border: 2px solid #ffd700;
-  box-shadow: 0 0 50px rgba(255,200,0,0.5);
-  min-width: 260px;
+  background: linear-gradient(135deg, rgba(148,0,211,0.96), rgba(80,0,180,0.92));
+  border: 2px solid #cc66ff;
+  box-shadow: 0 0 60px rgba(148,0,211,0.6);
 }
-.bs-label  { font-size: 12px; color: rgba(0,0,0,0.65); letter-spacing: 2px; font-weight: bold; }
-.bs-name   { font-size: 26px; font-weight: bold; color: #000; }
-.bs-amount { font-size: 20px; font-weight: bold; color: rgba(0,0,0,0.75); }
 
-/* MILESTONE */
+.bs-icon   { font-size: 30px; line-height: 1.2; margin-bottom: 4px; }
+.bs-label  { font-size: 24px; font-weight: 900; color: #fff; line-height: 1.2; letter-spacing: 0.5px; }
+.bs-name   { font-size: 40px; font-weight: 900; color: #fff; line-height: 1.1; }
+.bs-amount { font-size: 28px; font-weight: 700; color: rgba(255,255,255,0.92); margin-top: 6px; line-height: 1.2; }
+
+/* MILESTONE (1만개) */
 .milestone-popup {
-  background: linear-gradient(135deg, rgba(0,100,255,0.95), rgba(0,194,255,0.9));
-  border: 2px solid #00c2ff;
-  box-shadow: 0 0 50px rgba(0,194,255,0.5);
-  min-width: 240px;
+  background: linear-gradient(135deg, rgba(217,119,6,0.96), rgba(180,80,0,0.92));
+  border: 2px solid #fbbf24;
+  box-shadow: 0 0 60px rgba(217,119,6,0.6);
 }
-.ms-label { font-size: 12px; color: rgba(255,255,255,0.7); letter-spacing: 2px; font-weight: bold; }
-.ms-name  { font-size: 24px; font-weight: bold; color: #fff; }
-.ms-value { font-size: 16px; color: rgba(255,255,255,0.85); }
+
+.ms-icon   { font-size: 32px; line-height: 1.2; margin-bottom: 4px; }
+.ms-label  { font-size: 26px; font-weight: 900; color: #fff; line-height: 1.2; letter-spacing: 0.5px; }
+.ms-sub    { font-size: 20px; font-weight: 700; color: rgba(255,255,255,0.92); margin-top: 4px; line-height: 1.2; }
 
 /* LEAD CHANGE */
 .lead-change-popup {
   background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(200,200,255,0.9));
   border: 2px solid #fff;
   box-shadow: 0 0 50px rgba(255,255,255,0.4);
-  min-width: 240px;
 }
+
 .lc-label { font-size: 12px; color: rgba(0,0,80,0.7); letter-spacing: 2px; font-weight: bold; }
 .lc-name  { font-size: 24px; font-weight: bold; color: #000080; }
 .lc-text  { font-size: 12px; color: rgba(0,0,0,0.6); }

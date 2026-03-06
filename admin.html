@@ -70,16 +70,103 @@
       padding:9px 20px;
       border:none;
       border-radius:8px;
-      font-size:13px;
+      font-size:14px;
       font-weight:bold;
       cursor:pointer;
       transition:all 0.2s;
+      letter-spacing:0.5px;
     }
     .btn:hover { opacity:0.85; transform:translateY(-1px); }
-    .btn-main { background:linear-gradient(135deg,#00c2ff,#0066ff); color:#fff; }
-    .btn-warn { background:linear-gradient(135deg,#ff8c00,#ff2e63); color:#fff; }
+    .btn:active { transform:translateY(0); }
+    .btn-add    { background:linear-gradient(135deg,#00c2ff,#0066ff); color:#fff; }
+    .btn-minus  { background:linear-gradient(135deg,#ff8c00,#ff2e63); color:#fff; }
+    .btn-warn   { background:linear-gradient(135deg,#ff8c00,#ff2e63); color:#fff; }
     .btn-danger { background:linear-gradient(135deg,#ff2e63,#990022); color:#fff; }
     .btn-reload { background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:#ccc; }
+
+    /* ── 점수 조작 카드 스타일 ── */
+    .score-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .score-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      padding: 14px 14px 12px;
+    }
+    .score-card .player-name {
+      font-size: 14px;
+      font-weight: bold;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .score-card .cur-score {
+      font-size: 22px;
+      font-weight: bold;
+      color: #ffd700;
+      margin-bottom: 10px;
+      line-height: 1;
+    }
+    .score-card .btn-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .score-card input.amt-input {
+      width: 70px;
+      padding: 6px 8px;
+      font-size: 13px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 6px;
+      color: #fff;
+      outline: none;
+      text-align: center;
+    }
+    .score-card input.amt-input:focus {
+      border-color: #00c2ff;
+    }
+    .btn-sm {
+      padding: 6px 13px;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-sm:hover { opacity: 0.85; }
+    .btn-sm.plus  { background: linear-gradient(135deg,#00c2ff,#0066ff); color: #fff; }
+    .btn-sm.minus { background: linear-gradient(135deg,#ff2e63,#990022); color: #fff; }
+    .card-msg {
+      font-size: 11px;
+      color: #ffd700;
+      min-height: 14px;
+      margin-top: 4px;
+    }
+
+    /* ── 빠른 버튼 ── */
+    .quick-btns {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+    .q-btn {
+      padding: 4px 10px;
+      border-radius: 5px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.07);
+      color: #ccc;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .q-btn:hover { background: rgba(0,194,255,0.2); border-color: #00c2ff; color:#00c2ff; }
+
     .baseline-grid {
       display:grid;
       grid-template-columns:1fr 1fr;
@@ -113,35 +200,35 @@
       color:#ffd700;
       min-height:18px;
     }
+    .divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      margin: 10px 0;
+    }
+    .hint {
+      font-size:11px;
+      color:rgba(255,255,255,0.35);
+      margin-top:4px;
+    }
   </style>
 </head>
 <body>
 
 <h1>🎮 SOOP Score Admin</h1>
 
-<!-- 점수 추가 -->
+<!-- ★ 점수 카드 (플레이어별 +/-) -->
 <div class="section">
-  <h2>➕ 점수 추가</h2>
-  <div class="row">
-    <label>플레이어</label>
-    <select id="playerSelect">
-      <option value="busky3">하두링</option>
-      <option value="yyssaa33">제티</option>
-      <option value="rlsk0705">기나</option>
-      <option value="finepearls">혜냥</option>
-      <option value="khl1589">요시</option>
-      <option value="wkddudrms15">난수다</option>
-    </select>
-    <label>풍선 수</label>
-    <input type="number" id="addAmount" placeholder="500" min="1"/>
-    <button class="btn btn-main" onclick="addScore()">ADD</button>
+  <h2>🎯 점수 조작 (플레이어별)</h2>
+  <div class="score-cards" id="scoreCards">
+    <!-- JS가 동적으로 생성 -->
+    <div style="color:rgba(255,255,255,0.4);font-size:13px;padding:8px">로딩 중...</div>
   </div>
-  <div class="msg" id="addMsg"></div>
+  <p class="hint">※ 숫자 입력 후 ➕ 또는 ➖ 버튼을 누르세요. 빠른 버튼으로 자주 쓰는 값을 바로 입력할 수 있습니다.</p>
 </div>
 
 <!-- 베이스라인 설정 -->
 <div class="section">
-  <h2>📊 베이스라인 설정 (방송 시작 전 초기값)</h2>
+  <h2>📊 베이스라인 설정 (방송 시작 전 초기값 직접 입력)</h2>
   <div class="baseline-grid">
     <div class="baseline-item">
       <label>하두링</label>

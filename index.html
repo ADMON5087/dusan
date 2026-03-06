@@ -12,39 +12,39 @@
   <div class="overlay">
     <div class="panel">
 
-      <!-- 상단 타이틀 -->
-      <div class="top-title">
-        <div class="title" id="title">풍선 배틀</div>
-        <div class="subtitle" id="subtitle">로딩 중...</div>
+      <!-- 1. 상단 타이틀 -->
+      <div class="top-title nm-out">
+        <div class="title" id="title">갈없녀 두산CK</div>
+        <div class="subtitle" id="subtitle">🏔️ 누적 10만개 달성시 장가계</div>
       </div>
 
-      <!-- 위너 카드 -->
-      <div class="winner-card" id="winnerCard">
+      <!-- 2. 위너 카드 -->
+      <div class="winner-card nm-out" id="winnerCard">
         <div class="winner-label">🏆 현재 리더</div>
         <div class="winner-name" id="winnerName">-</div>
         <div class="winner-gap" id="winnerGap"></div>
       </div>
 
-      <!-- 총합 점수 -->
+      <!-- 3. 총합 점수 -->
       <div class="totals-row">
-        <div class="total-box left">
+        <div class="total-box left nm-out">
           <div class="total-label" id="leftLabel">하두링</div>
           <div class="total-score" id="leftScore">0</div>
-          <div class="total-unit">🎈 풍선</div>
+          <div class="total-unit">⭐</div>
         </div>
-        <div class="total-box right">
+        <div class="total-box right nm-out">
           <div class="total-label">멤버들 총합</div>
           <div class="total-score" id="rightTotal">0</div>
-          <div class="total-unit">🎈 풍선</div>
+          <div class="total-unit">⭐</div>
         </div>
       </div>
 
-      <!-- VS 게이지 -->
-      <div class="gauge-section">
+      <!-- 4. VS 게이지 -->
+      <div class="gauge-section nm-out">
         <div class="gauge-labels">
-          <span class="left-pct" id="leftPct">0%</span>
+          <span class="left-pct" id="leftPct">하두링 0%</span>
           <span class="vs-text">VS</span>
-          <span class="right-pct" id="rightPct">0%</span>
+          <span class="right-pct" id="rightPct">멤버들 0%</span>
         </div>
         <div class="gauge-bar">
           <div class="gauge-left" id="gaugeLeft" style="width:50%"></div>
@@ -52,36 +52,44 @@
         </div>
       </div>
 
-      <!-- 멤버 랭킹 -->
-      <div class="ranking-box">
+      <!-- 5. 멤버 랭킹 (flex:1 — 남은 높이 전부 채움) -->
+      <div class="ranking-box nm-out">
         <div class="ranking-title">👑 멤버 랭킹</div>
-        <div id="rankingList"></div>
+        <div class="rank-rows" id="rankingList"></div>
       </div>
 
-      <!-- 사이렌 바 -->
-      <div class="siren-bar" id="sirenBar" style="display:none">
+      <!-- 6. 큰손 팝업 (랭킹 아래 · 사이렌 바로 위) — 평소 hidden -->
+      <div class="bighand-popup" id="bighandPopup">
+        <div class="bh-label">💎 큰손 등장!</div>
+        <div class="bh-name" id="bhName"></div>
+        <div class="bh-amount" id="bhAmount"></div>
+      </div>
+
+      <!-- 7. 사이렌 바 (5분 선두 유지 시 표시) -->
+      <div class="siren-bar" id="sirenBar">
         🚨 <span id="sirenText"></span> 🚨
       </div>
 
     </div><!-- /panel -->
 
-    <!-- 팝업들 -->
-    <div class="popup big-support-popup" id="bigSupportPopup" style="display:none">
-      <div class="bs-label">🎈 BIG SUPPORT</div>
+    <!-- 팝업들 (500개+ / 1만개) -->
+    <div class="popup big-support-popup" id="bigSupportPopup">
+      <div class="bs-icon">🎉</div>
+      <div class="bs-label" id="bsLabel">500개 이상 투척!</div>
       <div class="bs-name" id="bsName"></div>
       <div class="bs-amount" id="bsAmount"></div>
     </div>
 
-    <div class="popup milestone-popup" id="milestonePopup" style="display:none">
-      <div class="ms-label">🎊 MILESTONE</div>
-      <div class="ms-name" id="msName"></div>
-      <div class="ms-value" id="msValue"></div>
+    <div class="popup milestone-popup" id="milestonePopup">
+      <div class="ms-icon">🏔️⭐🎊</div>
+      <div class="ms-label" id="msLabel">누적 1만개 돌파!</div>
+      <div class="ms-sub" id="msValue"></div>
     </div>
 
-    <div class="popup lead-change-popup" id="leadChangePopup" style="display:none">
+    <div class="popup lead-change-popup" id="leadChangePopup">
       <div class="lc-label">⚡ LEAD CHANGE!</div>
       <div class="lc-name" id="lcName"></div>
-      <div class="lc-text">이 앞서기 시작했습니다!</div>
+      <div class="lc-text">이(가) 앞서기 시작했습니다!</div>
     </div>
 
     <!-- 컨페티 레이어 -->
