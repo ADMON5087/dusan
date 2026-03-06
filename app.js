@@ -175,7 +175,7 @@ function render(data) {
       if (diff >= 500) {
         document.getElementById('bsLabel').textContent  = '🎉 500개 이상  투하!';
         document.getElementById('bsName').textContent   = m.label + '방';
-        document.getElementById('bsAmount').textContent = '⭐ +' + formatNumber(diff) + '개<br>투하!';
+        document.getElementById('bsAmount').innerHTML = '⭐ +' + formatNumber(diff) + '개<br>투하!';
         showPopup('bigSupportPopup', 8000);
         makeConfetti(50);
       }
@@ -183,7 +183,7 @@ function render(data) {
     if (leftDiff >= 500) {
       document.getElementById('bsLabel').textContent  = '🎉 500개 이상  투척!';
       document.getElementById('bsName').textContent   = leftName + '방';
-      document.getElementById('bsAmount').textContent = '⭐ +' + formatNumber(leftDiff) + '개<br>투하!';
+      document.getElementById('bsAmount').innerHTML = '⭐ +' + formatNumber(leftDiff) + '개<br>투하!';
       showPopup('bigSupportPopup', 8000);
       makeConfetti(50);
     }
