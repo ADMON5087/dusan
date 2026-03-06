@@ -14,7 +14,7 @@ const PLAYERS = [
   { id: 'khl1589',     label: '요시' },
   { id: 'yyssaa33',    label: '제티' },
   { id: 'rlsk0705',    label: '기나' },
-  { id: 'wkddudrms15', label: '난수다' },
+  { id: 'wkddudrms15', label: '난수' },
 ];
 
 // 빠른 입력 버튼 값
