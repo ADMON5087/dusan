@@ -405,7 +405,7 @@ html, body {
 .popup {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 63%;
   transform: translate(-50%, -50%) scale(0);
   z-index: 200;
   border-radius: 16px;
