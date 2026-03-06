@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SOOP Balloon Battle v4</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+</head>
+<body>
+  <div class="overlay">
+    <div class="panel">
+
+      <!-- 상단 타이틀 -->
+      <div class="top-title">
+        <div class="title" id="title">풍선 배틀</div>
+        <div class="subtitle" id="subtitle">로딩 중...</div>
+      </div>
+
+      <!-- 위너 카드 -->
+      <div class="winner-card" id="winnerCard">
+        <div class="winner-label">🏆 현재 리더</div>
+        <div class="winner-name" id="winnerName">-</div>
+        <div class="winner-gap" id="winnerGap"></div>
+      </div>
+
+      <!-- 총합 점수 -->
+      <div class="totals-row">
+        <div class="total-box left">
+          <div class="total-label" id="leftLabel">하두링</div>
+          <div class="total-score" id="leftScore">0</div>
+          <div class="total-unit">🎈 풍선</div>
+        </div>
+        <div class="total-box right">
+          <div class="total-label">멤버들 총합</div>
+          <div class="total-score" id="rightTotal">0</div>
+          <div class="total-unit">🎈 풍선</div>
+        </div>
+      </div>
+
+      <!-- VS 게이지 -->
+      <div class="gauge-section">
+        <div class="gauge-labels">
+          <span class="left-pct" id="leftPct">0%</span>
+          <span class="vs-text">VS</span>
+          <span class="right-pct" id="rightPct">0%</span>
+        </div>
+        <div class="gauge-bar">
+          <div class="gauge-left" id="gaugeLeft" style="width:50%"></div>
+          <div class="gauge-right" id="gaugeRight" style="width:50%"></div>
+        </div>
+      </div>
+
+      <!-- 멤버 랭킹 -->
+      <div class="ranking-box">
+        <div class="ranking-title">👑 멤버 랭킹</div>
+        <div id="rankingList"></div>
+      </div>
+
+      <!-- 사이렌 바 -->
+      <div class="siren-bar" id="sirenBar" style="display:none">
+        🚨 <span id="sirenText"></span> 🚨
+      </div>
+
+    </div><!-- /panel -->
+
+    <!-- 팝업들 -->
+    <div class="popup big-support-popup" id="bigSupportPopup" style="display:none">
+      <div class="bs-label">🎈 BIG SUPPORT</div>
+      <div class="bs-name" id="bsName"></div>
+      <div class="bs-amount" id="bsAmount"></div>
+    </div>
+
+    <div class="popup milestone-popup" id="milestonePopup" style="display:none">
+      <div class="ms-label">🎊 MILESTONE</div>
+      <div class="ms-name" id="msName"></div>
+      <div class="ms-value" id="msValue"></div>
+    </div>
+
+    <div class="popup lead-change-popup" id="leadChangePopup" style="display:none">
+      <div class="lc-label">⚡ LEAD CHANGE!</div>
+      <div class="lc-name" id="lcName"></div>
+      <div class="lc-text">이 앞서기 시작했습니다!</div>
+    </div>
+
+    <!-- 컨페티 레이어 -->
+    <div class="confetti-layer" id="confettiLayer"></div>
+
+  </div><!-- /overlay -->
+
+  <script src="app.js"></script>
+</body>
+</html>

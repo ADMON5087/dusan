@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SOOP Score Admin</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background:#0f0f1a;
+      font-family:'Arial',sans-serif;
+      color:#e0e0e0;
+      min-height:100vh;
+      padding:24px;
+    }
+    h1 {
+      text-align:center;
+      font-size:22px;
+      font-weight:bold;
+      color:#00c2ff;
+      margin-bottom:24px;
+      letter-spacing:1px;
+      border-bottom:1px solid rgba(0,194,255,0.3);
+      padding-bottom:12px;
+    }
+    .section {
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.1);
+      border-radius:12px;
+      padding:18px 20px;
+      margin-bottom:16px;
+    }
+    .section h2 {
+      font-size:13px;
+      color:rgba(255,255,255,0.5);
+      text-transform:uppercase;
+      letter-spacing:1px;
+      margin-bottom:14px;
+    }
+    .row {
+      display:flex;
+      gap:10px;
+      align-items:center;
+      margin-bottom:10px;
+      flex-wrap:wrap;
+    }
+    label {
+      font-size:13px;
+      color:rgba(255,255,255,0.7);
+      min-width:60px;
+    }
+    select, input[type="number"] {
+      background:rgba(255,255,255,0.08);
+      border:1px solid rgba(255,255,255,0.2);
+      border-radius:8px;
+      padding:8px 12px;
+      color:#fff;
+      font-size:14px;
+      outline:none;
+    }
+    select { min-width:130px; }
+    input[type="number"] { width:110px; }
+    select:focus, input:focus {
+      border-color:#00c2ff;
+      background:rgba(0,194,255,0.08);
+    }
+    .btn {
+      padding:9px 20px;
+      border:none;
+      border-radius:8px;
+      font-size:13px;
+      font-weight:bold;
+      cursor:pointer;
+      transition:all 0.2s;
+    }
+    .btn:hover { opacity:0.85; transform:translateY(-1px); }
+    .btn-main { background:linear-gradient(135deg,#00c2ff,#0066ff); color:#fff; }
+    .btn-warn { background:linear-gradient(135deg,#ff8c00,#ff2e63); color:#fff; }
+    .btn-danger { background:linear-gradient(135deg,#ff2e63,#990022); color:#fff; }
+    .btn-reload { background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:#ccc; }
+    .baseline-grid {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+      margin-bottom:12px;
+    }
+    .baseline-item {
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .baseline-item label { min-width:50px; font-size:13px; }
+    .baseline-item input { flex:1; min-width:0; }
+    .state-box {
+      background:rgba(0,0,0,0.4);
+      border:1px solid rgba(255,255,255,0.1);
+      border-radius:8px;
+      padding:14px;
+      font-family:monospace;
+      font-size:12px;
+      color:#7fff7f;
+      max-height:280px;
+      overflow-y:auto;
+      line-height:1.6;
+      white-space:pre-wrap;
+      word-break:break-all;
+    }
+    .msg {
+      margin-top:8px;
+      font-size:12px;
+      color:#ffd700;
+      min-height:18px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🎮 SOOP Score Admin</h1>
+
+<!-- 점수 추가 -->
+<div class="section">
+  <h2>➕ 점수 추가</h2>
+  <div class="row">
+    <label>플레이어</label>
+    <select id="playerSelect">
+      <option value="busky3">하두링</option>
+      <option value="yyssaa33">제티</option>
+      <option value="rlsk0705">기나</option>
+      <option value="finepearls">혜냥</option>
+      <option value="khl1589">요시</option>
+      <option value="wkddudrms15">난수다</option>
+    </select>
+    <label>풍선 수</label>
+    <input type="number" id="addAmount" placeholder="500" min="1"/>
+    <button class="btn btn-main" onclick="addScore()">ADD</button>
+  </div>
+  <div class="msg" id="addMsg"></div>
+</div>
+
+<!-- 베이스라인 설정 -->
+<div class="section">
+  <h2>📊 베이스라인 설정 (방송 시작 전 초기값)</h2>
+  <div class="baseline-grid">
+    <div class="baseline-item">
+      <label>하두링</label>
+      <input type="number" id="base_busky3" value="0" min="0"/>
+    </div>
+    <div class="baseline-item">
+      <label>제티</label>
+      <input type="number" id="base_yyssaa33" value="0" min="0"/>
+    </div>
+    <div class="baseline-item">
+      <label>기나</label>
+      <input type="number" id="base_rlsk0705" value="0" min="0"/>
+    </div>
+    <div class="baseline-item">
+      <label>혜냥</label>
+      <input type="number" id="base_finepearls" value="0" min="0"/>
+    </div>
+    <div class="baseline-item">
+      <label>요시</label>
+      <input type="number" id="base_khl1589" value="0" min="0"/>
+    </div>
+    <div class="baseline-item">
+      <label>난수다</label>
+      <input type="number" id="base_wkddudrms15" value="0" min="0"/>
+    </div>
+  </div>
+  <button class="btn btn-warn" onclick="applyBaseline()">APPLY BASELINE</button>
+  <div class="msg" id="baseMsg"></div>
+</div>
+
+<!-- 매치 리셋 -->
+<div class="section">
+  <h2>🔄 매치 리셋</h2>
+  <div class="row">
+    <span style="font-size:13px;color:rgba(255,255,255,0.6)">모든 점수를 0으로 초기화합니다</span>
+    <button class="btn btn-danger" onclick="resetMatch()">RESET MATCH</button>
+  </div>
+  <div class="msg" id="resetMsg"></div>
+</div>
+
+<!-- 현재 상태 -->
+<div class="section">
+  <h2>👁 현재 상태</h2>
+  <div class="row" style="margin-bottom:12px">
+    <button class="btn btn-reload" onclick="reloadState()">현재 상태 새로고침</button>
+  </div>
+  <div class="state-box" id="stateView">로딩 중...</div>
+</div>
+
+<script src="admin.js"></script>
+</body>
+</html>
