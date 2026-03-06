@@ -154,18 +154,18 @@ function render(data) {
   // ── 이벤트 감지 ──
   if (Object.keys(prevScores).length > 0) {
 
-    // 큰손 (멤버 500개+ 투척)
+    // 큰손 (멤버 500개+ 투하)
     MEMBERS.forEach(m => {
       const diff = (scores[m.id] || 0) - (prevScores[m.id] || 0);
       if (diff >= 500) {
-        showBighand(m.label, '⭐ +' + formatNumber(diff) + '개 별풍선  투척!', 4000);
+        showBighand(m.label, '⭐ +' + formatNumber(diff) + '개 별풍선  투하!', 4000);
         makeConfetti(40);
       }
     });
     // 큰손 (하두링 500개+)
     const leftDiff = leftScore - (prevScores[LEFT_ID] || 0);
     if (leftDiff >= 500) {
-      showBighand(leftName, '⭐ +' + formatNumber(leftDiff) + '개 별풍선  투척!', 4000);
+      showBighand(leftName, '⭐ +' + formatNumber(leftDiff) + '개 별풍선  투하!', 4000);
       makeConfetti(40);
     }
 
@@ -173,9 +173,9 @@ function render(data) {
     MEMBERS.forEach(m => {
       const diff = (scores[m.id] || 0) - (prevScores[m.id] || 0);
       if (diff >= 500) {
-        document.getElementById('bsLabel').textContent  = '🎉 500개 이상  투척!';
+        document.getElementById('bsLabel').textContent  = '🎉 500개 이상  투하!';
         document.getElementById('bsName').textContent   = m.label + '방';
-        document.getElementById('bsAmount').textContent = '⭐ +' + formatNumber(diff) + '개  투척!';
+        document.getElementById('bsAmount').textContent = '⭐ +' + formatNumber(diff) + '개<br>투하!';
         showPopup('bigSupportPopup', 4500);
         makeConfetti(50);
       }
@@ -183,7 +183,7 @@ function render(data) {
     if (leftDiff >= 500) {
       document.getElementById('bsLabel').textContent  = '🎉 500개 이상  투척!';
       document.getElementById('bsName').textContent   = leftName + '방';
-      document.getElementById('bsAmount').textContent = '⭐ +' + formatNumber(leftDiff) + '개  투척!';
+      document.getElementById('bsAmount').textContent = '⭐ +' + formatNumber(leftDiff) + '개<br>투하!';
       showPopup('bigSupportPopup', 4500);
       makeConfetti(50);
     }
