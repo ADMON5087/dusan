@@ -1,15 +1,14 @@
 // admin.js - SOOP Score Admin Logic
 
-const supabase = window.supabase.createClient(
+const sbClient = window.supabase.createClient(
   APP_CONFIG.SUPABASE_URL,
   APP_CONFIG.SUPABASE_ANON_KEY
 );
 
 const MATCH_KEY = 'galduosanck';
 
-// 현재 매치 데이터 가져오기
 async function getMatch() {
-  const { data, error } = await supabase
+  const { data, error } = await sbClient
     .from('match_state')
     .select('*')
     .eq('match_key', MATCH_KEY)
@@ -18,7 +17,6 @@ async function getMatch() {
   return data;
 }
 
-// 상태 새로고침
 async function reloadState() {
   const data = await getMatch();
   if (!data) {
@@ -28,7 +26,6 @@ async function reloadState() {
   document.getElementById('stateView').textContent = JSON.stringify(data, null, 2);
 }
 
-// 점수 추가
 async function addScore() {
   const player = document.getElementById('playerSelect').value;
   const amount = parseInt(document.getElementById('addAmount').value);
@@ -45,7 +42,7 @@ async function addScore() {
   const scores = data.scores || {};
   scores[player] = (scores[player] || 0) + amount;
 
-  const { error } = await supabase
+  const { error } = await sbClient
     .from('match_state')
     .update({ scores, updated_at: new Date().toISOString() })
     .eq('match_key', MATCH_KEY);
@@ -60,7 +57,6 @@ async function addScore() {
   setTimeout(() => { msg.textContent = ''; }, 3000);
 }
 
-// 베이스라인 적용
 async function applyBaseline() {
   const msg = document.getElementById('baseMsg');
   const scores = {
@@ -72,7 +68,7 @@ async function applyBaseline() {
     wkddudrms15: parseInt(document.getElementById('base_wkddudrms15').value) || 0,
   };
 
-  const { error } = await supabase
+  const { error } = await sbClient
     .from('match_state')
     .update({ scores, updated_at: new Date().toISOString() })
     .eq('match_key', MATCH_KEY);
@@ -86,7 +82,6 @@ async function applyBaseline() {
   setTimeout(() => { msg.textContent = ''; }, 3000);
 }
 
-// 매치 리셋
 async function resetMatch() {
   if (!confirm('⚠️ 모든 점수를 0으로 초기화합니다. 계속하시겠습니까?')) return;
   const msg = document.getElementById('resetMsg');
@@ -96,13 +91,12 @@ async function resetMatch() {
     finepearls: 0, khl1589: 0, wkddudrms15: 0
   };
 
-  // 베이스라인 입력 초기화
   Object.keys(scores).forEach(id => {
     const el = document.getElementById('base_' + id);
     if (el) el.value = 0;
   });
 
-  const { error } = await supabase
+  const { error } = await sbClient
     .from('match_state')
     .update({ scores, updated_at: new Date().toISOString() })
     .eq('match_key', MATCH_KEY);
@@ -116,5 +110,4 @@ async function resetMatch() {
   setTimeout(() => { msg.textContent = ''; }, 3000);
 }
 
-// 초기 로드
 reloadState();
