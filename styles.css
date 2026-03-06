@@ -308,12 +308,12 @@ html, body {
 .rank-bar-fill {
   height: 100%;
   border-radius: 3px;
-  background: linear-gradient(90deg, #b02060, #d02870);
+  background: linear-gradient(90deg, #3a5fdf, #5b7fff);
   transition: width 0.5s ease;
 }
 
 .rank-row.mvp .rank-bar-fill {
-  background: linear-gradient(90deg, #d02870, #ff6aaa);
+  background: linear-gradient(90deg, #5b7fff, #90aaff);
 }
 
 .rank-score {
