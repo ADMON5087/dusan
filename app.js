@@ -141,11 +141,11 @@ function render(data) {
   } else if (isLeftLeading) {
     // 하두링 선두 → 핑크 색
     gapEl.textContent = '멤버들보다 +' + formatNumber(gap) + ' 앞서는 중';
-    gapEl.className   = 'winner-gap haduring-lead';
+    gapEl.className   = 'winner-gap';
   } else {
     // 멤버 선두 → 파란 색
     gapEl.textContent = leftName + '보다 +' + formatNumber(gap) + ' 앞서는 중';
-    gapEl.className   = 'winner-gap';
+    gapEl.className   = 'winner-gap haduring-lead';
   }
 
   // 랭킹 렌더
