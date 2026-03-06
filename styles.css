@@ -103,13 +103,13 @@ html, body {
 .winner-gap {
   font-size: 19px;
   font-weight: 900;
-  color: #c0306a;   /* 멤버 앞설 때 핑크 */
+  color: #c0306a;   /* 멤버 앞설 때 파란색 */
   margin-top: 5px;
   letter-spacing: 0.3px;
   line-height: 1.25;
 }
 
-/* 하두링 앞설 때 파란색 */
+/* 하두링 앞설 때 핑크 */
 .winner-gap.haduring-lead {
   color: #3a5fdf;
 }
