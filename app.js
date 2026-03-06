@@ -96,26 +96,6 @@ function makeConfetti(count = 30) {
   setTimeout(() => { layer.style.display = 'none'; layer.innerHTML = ''; }, 3000);
 }
 
-// ── 팝업 큐 시스템 (팝업 겹침 방지) ─────────────────────
-const popupQueue = [];
-let popupBusy = false;
-
-function queuePopup(showFn, duration) {
-  popupQueue.push({ showFn, duration });
-  processQueue();
-}
-
-function processQueue() {
-  if (popupBusy || popupQueue.length === 0) return;
-  popupBusy = true;
-  const { showFn, duration } = popupQueue.shift();
-  showFn();
-  setTimeout(() => {
-    popupBusy = false;
-    processQueue();
-  }, duration + 500); // 팝업 사이 0.5초 간격
-}
-
 // ── 메인 렌더 함수 ───────────────────────────────────────
 
 function render(data) {
@@ -159,9 +139,11 @@ function render(data) {
     gapEl.textContent = '동점!';
     gapEl.className   = 'winner-gap';
   } else if (isLeftLeading) {
+    // 하두링 선두 → 파란 색
     gapEl.textContent = '멤버들보다 +' + formatNumber(gap) + ' 앞서는 중';
     gapEl.className   = 'winner-gap haduring-lead';
   } else {
+    // 멤버 선두 → 핑크 색
     gapEl.textContent = leftName + '보다 +' + formatNumber(gap) + ' 앞서는 중';
     gapEl.className   = 'winner-gap';
   }
@@ -172,83 +154,64 @@ function render(data) {
   // ── 이벤트 감지 ──
   if (Object.keys(prevScores).length > 0) {
 
-    // 큰손 + 500개+ 팝업 (멤버)
+    // 큰손 (멤버 500개+ 투하)
     MEMBERS.forEach(m => {
       const diff = (scores[m.id] || 0) - (prevScores[m.id] || 0);
       if (diff >= 500) {
-        const label   = m.label;
-        const fmtDiff = formatNumber(diff);
-
-        // ① 큰손 팝업 (랭킹 박스 아래 작은 팝업)
-        queuePopup(() => {
-          showBighand(label, '⭐ +' + fmtDiff + '개 별풍선 투하!', 7000);
-          makeConfetti(40);
-        }, 7000);
-
-        // ② 500개+ 대형 팝업
-        queuePopup(() => {
-          document.getElementById('bsLabel').textContent = '🎉 500개 이상  투하!';
-          document.getElementById('bsName').textContent  = label + '방';
-          document.getElementById('bsAmount').innerHTML  = '⭐ +' + fmtDiff + '개<br>투하!';
-          showPopup('bigSupportPopup', 8000);
-          makeConfetti(50);
-        }, 8000);
+        showBighand(m.label, '⭐ +' + formatNumber(diff) + '개 별풍선  투하!', 7000);
+        makeConfetti(40);
       }
     });
-
-    // 큰손 + 500개+ 팝업 (하두링)
+    // 큰손 (하두링 500개+)
     const leftDiff = leftScore - (prevScores[LEFT_ID] || 0);
     if (leftDiff >= 500) {
-      const fmtDiff = formatNumber(leftDiff);
+      showBighand(leftName, '⭐ +' + formatNumber(leftDiff) + '개 별풍선  투하!', 7000);
+      makeConfetti(40);
+    }
 
-      // ① 큰손 팝업
-      queuePopup(() => {
-        showBighand(leftName, '⭐ +' + fmtDiff + '개 별풍선 투하!', 7000);
-        makeConfetti(40);
-      }, 7000);
-
-      // ② 500개+ 대형 팝업
-      queuePopup(() => {
-        document.getElementById('bsLabel').textContent = '🎉 500개 이상  투하!';
-        document.getElementById('bsName').textContent  = leftName + '방';
-        document.getElementById('bsAmount').innerHTML  = '⭐ +' + fmtDiff + '개<br>투하!';
+    // 500개+ 오버레이 팝업 (별도 대형 팝업)
+    MEMBERS.forEach(m => {
+      const diff = (scores[m.id] || 0) - (prevScores[m.id] || 0);
+      if (diff >= 500) {
+        document.getElementById('bsLabel').textContent  = '🎉 500개 이상  투하!';
+        document.getElementById('bsName').textContent   = m.label + '방';
+        document.getElementById('bsAmount').innerHTML = '⭐ +' + formatNumber(diff) + '개<br>투하!';
         showPopup('bigSupportPopup', 8000);
         makeConfetti(50);
-      }, 8000);
+      }
+    });
+    if (leftDiff >= 500) {
+      document.getElementById('bsLabel').textContent  = '🎉 500개 이상  투척!';
+      document.getElementById('bsName').textContent   = leftName + '방';
+      document.getElementById('bsAmount').innerHTML = '⭐ +' + formatNumber(leftDiff) + '개<br>투하!';
+      showPopup('bigSupportPopup', 8000);
+      makeConfetti(50);
     }
 
     // MILESTONE (1만 단위 돌파)
     const allPlayers = [{ id: LEFT_ID, label: leftName }, ...MEMBERS];
     allPlayers.forEach(p => {
-      const prev     = prevScores[p.id] || 0;
-      const curr     = scores[p.id]     || 0;
-      const prevMile = Math.floor(prev / 10000);
-      const currMile = Math.floor(curr / 10000);
+      const prev      = prevScores[p.id] || 0;
+      const curr      = scores[p.id]     || 0;
+      const prevMile  = Math.floor(prev / 10000);
+      const currMile  = Math.floor(curr / 10000);
       if (currMile > prevMile && currMile > (milestones[p.id] || 0)) {
         milestones[p.id] = currMile;
-        const label   = p.label;
-        const fmtMile = formatNumber(currMile);
-        const fmtLeft = formatNumber(100000 - curr);
-        queuePopup(() => {
-          document.getElementById('msLabel').textContent = '🏔️ 누적 ' + fmtMile + '만개 돌파!';
-          document.getElementById('msValue').textContent = label + ' · 목표까지 남은 ' + fmtLeft + '개!';
-          showPopup('milestonePopup', 8000);
-          makeConfetti(60);
-        }, 8000);
+        document.getElementById('msLabel').textContent = '🏔️ 누적 ' + formatNumber(currMile) + '만개 돌파!';
+        document.getElementById('msValue').textContent = p.label + ' · 목표까지 남은 ' + formatNumber(100000 - curr) + '개!';
+        showPopup('milestonePopup', 8000);
+        makeConfetti(60);
       }
     });
 
     // LEAD CHANGE
     const currentLeader = isLeftLeading ? 'left' : 'right';
     if (prevLeader && prevLeader !== currentLeader) {
-      const leaderName = leader;
-      queuePopup(() => {
-        document.getElementById('lcName').textContent = leaderName;
-        showPopup('leadChangePopup', 5000);
-        const wc = document.getElementById('winnerCard');
-        wc.classList.add('flash-card');
-        setTimeout(() => wc.classList.remove('flash-card'), 1000);
-      }, 5000);
+      document.getElementById('lcName').textContent = leader;
+      showPopup('leadChangePopup', 3000);
+      const wc = document.getElementById('winnerCard');
+      wc.classList.add('flash-card');
+      setTimeout(() => wc.classList.remove('flash-card'), 1000);
     }
 
     // SIREN (5분 이상 같은 팀 선두)
@@ -261,11 +224,11 @@ function render(data) {
         const sirenTxt = document.getElementById('sirenText');
         sirenBar.style.display = 'block';
         if (isLeftLeading) {
-          sirenTxt.textContent = leftName + ' 5분째 선두유지중!';
-          sirenBar.className   = 'siren-bar haduring-lead';
+          sirenTxt.textContent  = leftName + ' 5분째 선두유지중!';
+          sirenBar.className    = 'siren-bar haduring-lead';
         } else {
-          sirenTxt.textContent = '멤버들 5분째 선두유지중!';
-          sirenBar.className   = 'siren-bar member-lead';
+          sirenTxt.textContent  = '멤버들 5분째 선두유지중!';
+          sirenBar.className    = 'siren-bar member-lead';
         }
       }
     } else {
