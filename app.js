@@ -17,7 +17,7 @@ const MEMBERS = [
   { id: 'rlsk0705',    label: '기나' },
   { id: 'finepearls',  label: '혜냥' },
   { id: 'khl1589',     label: '요시' },
-  { id: 'wkddudrms15', label: '난수다' },
+  { id: 'wkddudrms15', label: '난수' },
 ];
 
 // 이전 상태 저장 (애니메이션 비교용)
