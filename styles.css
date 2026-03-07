@@ -1,7 +1,8 @@
 /* ============================================
    SOOP Balloon Battle v4
-   COMPLETE STABLE STYLE
-   ============================================ */
+   FULL STABLE CSS
+   방송용 400x1000
+============================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
 
@@ -12,15 +13,15 @@ box-sizing:border-box;
 }
 
 html,body{
-background:#e8ecf0;
-font-family:'Noto Sans KR','Arial',sans-serif;
-color:#2d2d3a;
-overflow:hidden;
 width:400px;
 height:1000px;
+background:#e8ecf0;
+font-family:'Noto Sans KR',sans-serif;
+overflow:hidden;
+color:#2d2d3a;
 }
 
-/* ───────── 기본 레이아웃 ───────── */
+/* 전체 레이아웃 */
 
 .overlay{
 width:400px;
@@ -37,23 +38,19 @@ padding:14px;
 gap:8px;
 }
 
-/* ───────── 뉴모피즘 ───────── */
+/* 뉴모피즘 */
 
 .nm-out{
+background:#e8ecf0;
+border-radius:15px;
 box-shadow:5px 5px 13px #c4c8cd,-5px -5px 13px #ffffff;
 }
 
-.nm-sm{
-box-shadow:3px 3px 8px #c4c8cd,-3px -3px 8px #ffffff;
-}
-
-/* ───────── 타이틀 ───────── */
+/* 상단 타이틀 */
 
 .top-title{
 text-align:center;
 padding:18px 12px;
-border-radius:15px;
-background:#e8ecf0;
 }
 
 .title{
@@ -64,18 +61,15 @@ color:#4a4580;
 
 .subtitle{
 font-size:13px;
-font-weight:700;
 color:#7b77aa;
-margin-top:5px;
+margin-top:4px;
 }
 
-/* ───────── 위너 카드 ───────── */
+/* 위너 카드 */
 
 .winner-card{
-background:#e8ecf0;
-border-radius:15px;
-padding:18px;
 text-align:center;
+padding:18px;
 }
 
 .winner-label{
@@ -87,22 +81,22 @@ color:#7b77aa;
 .winner-name{
 font-size:21px;
 font-weight:900;
-color:#4a4580;
 margin-top:3px;
+color:#4a4580;
 }
 
 .winner-gap{
 font-size:18px;
 font-weight:900;
-color:#c0306a;
 margin-top:6px;
+color:#c0306a;
 }
 
 .winner-gap.haduring-lead{
 color:#3a5fdf;
 }
 
-/* ───────── 점수 박스 ───────── */
+/* 점수 */
 
 .totals-row{
 display:flex;
@@ -111,10 +105,8 @@ gap:10px;
 
 .total-box{
 flex:1;
-border-radius:14px;
-padding:18px;
 text-align:center;
-background:#e8ecf0;
+padding:16px;
 }
 
 .total-label{
@@ -136,11 +128,14 @@ color:#d02870;
 color:#3a5fdf;
 }
 
-/* ───────── VS 게이지 ───────── */
+.total-unit{
+font-size:12px;
+color:#aaa8cc;
+}
+
+/* VS 게이지 */
 
 .gauge-section{
-background:#e8ecf0;
-border-radius:14px;
 padding:14px;
 }
 
@@ -150,6 +145,19 @@ justify-content:space-between;
 font-size:13px;
 font-weight:700;
 margin-bottom:8px;
+}
+
+.left-pct{
+color:#d02870;
+}
+
+.right-pct{
+color:#3a5fdf;
+}
+
+.vs-text{
+color:#aaa8cc;
+font-weight:900;
 }
 
 .gauge-bar{
@@ -168,11 +176,10 @@ background:linear-gradient(90deg,#b02060,#d02870);
 background:linear-gradient(90deg,#3a5fdf,#5b7fff);
 }
 
-/* ───────── 랭킹 ───────── */
+/* 랭킹 */
 
 .ranking-box{
 flex:1;
-border-radius:15px;
 padding:12px;
 display:flex;
 flex-direction:column;
@@ -244,15 +251,15 @@ font-size:16px;
 font-weight:900;
 }
 
-/* ───────── 큰손 팝업 ───────── */
+/* 큰손 팝업 */
 
 .bighand-popup{
 background:linear-gradient(135deg,#d02870,#9a1f55);
 border-radius:14px;
 padding:14px;
 text-align:center;
-display:none;
 color:white;
+display:none;
 }
 
 .bh-label{
@@ -261,7 +268,7 @@ font-weight:700;
 }
 
 .bh-name{
-font-size:22px;
+font-size:20px;
 font-weight:900;
 margin-top:4px;
 }
@@ -271,78 +278,107 @@ font-size:14px;
 margin-top:4px;
 }
 
-/* ───────── 500개 팝업 ───────── */
+/* 500개 팝업 */
 
-#bigSupportPopup{
-position:absolute;
-left:50%;
-top:50%;
-transform:translate(-50%,-50%) scale(0);
+.big-support-popup{
 background:linear-gradient(135deg,#d02870,#9a1f55);
 color:white;
-padding:32px 40px;
-border-radius:22px;
-text-align:center;
-z-index:300;
-display:none;
-flex-direction:column;
-align-items:center;
-box-shadow:0 15px 45px rgba(0,0,0,0.35);
 }
 
-#bigSupportPopup.popup-show{
-display:flex;
-animation:bigSupportAnim .4s cubic-bezier(.175,.885,.32,1.275) forwards;
+.bs-icon{
+font-size:34px;
+margin-bottom:6px;
 }
 
-@keyframes bigSupportAnim{
-0%{transform:translate(-50%,-50%) scale(.4);opacity:0;}
-100%{transform:translate(-50%,-50%) scale(1);opacity:1;}
+.bs-label{
+font-size:20px;
+font-weight:900;
 }
 
-/* ───────── milestone 팝업 ───────── */
+.bs-name{
+font-size:28px;
+font-weight:900;
+margin-top:4px;
+}
 
-#milestonePopup{
+.bs-amount{
+font-size:18px;
+margin-top:6px;
+}
+
+/* milestone */
+
+.milestone-popup{
+background:linear-gradient(135deg,#ffd700,#ffb300);
+color:#222;
+}
+
+.ms-icon{
+font-size:34px;
+margin-bottom:6px;
+}
+
+.ms-label{
+font-size:22px;
+font-weight:900;
+}
+
+.ms-sub{
+font-size:16px;
+margin-top:6px;
+}
+
+/* 리드 체인지 */
+
+.lead-change-popup{
+background:#3a5fdf;
+color:white;
+}
+
+.lc-label{
+font-size:18px;
+font-weight:900;
+}
+
+.lc-name{
+font-size:26px;
+font-weight:900;
+margin-top:4px;
+}
+
+.lc-text{
+font-size:14px;
+margin-top:6px;
+}
+
+/* 팝업 공통 */
+
+.popup{
 position:absolute;
 left:50%;
 top:50%;
 transform:translate(-50%,-50%) scale(0);
-background:linear-gradient(135deg,#ffd700,#ffb300);
-color:#222;
-padding:30px 40px;
+padding:28px 34px;
 border-radius:20px;
 display:none;
 flex-direction:column;
 align-items:center;
-z-index:320;
+text-align:center;
+z-index:200;
+box-shadow:0 15px 45px rgba(0,0,0,0.35);
 }
 
-#milestonePopup.popup-show{
+.popup-show{
 display:flex;
-animation:bigSupportAnim .4s forwards;
+animation:popupAnim .35s cubic-bezier(.175,.885,.32,1.275) forwards;
 }
 
-/* ───────── 리드 체인지 ───────── */
-
-#leadChangePopup{
-position:absolute;
-left:50%;
-top:40%;
-transform:translate(-50%,-50%) scale(0);
-background:#3a5fdf;
-color:white;
-padding:24px 30px;
-border-radius:18px;
-display:none;
-z-index:310;
+@keyframes popupAnim{
+0%{transform:translate(-50%,-50%) scale(.4);opacity:0;}
+100%{transform:translate(-50%,-50%) scale(1);opacity:1;}
 }
 
-#leadChangePopup.popup-show{
-display:flex;
-animation:bigSupportAnim .35s forwards;
-}
-
-/* ───────── 5분 선두 사이렌 ───────── */
+/* 5분 선두 사이렌 */
 
 .siren-bar{
 border-radius:13px;
@@ -362,16 +398,16 @@ background:linear-gradient(90deg,#b02060,#d02870);
 background:linear-gradient(90deg,#3a5fdf,#5b7fff);
 }
 
-/* ───────── 컨페티 ───────── */
+/* 컨페티 */
 
-#confettiLayer{
+.confetti-layer{
 position:absolute;
 top:0;
 left:0;
 width:100%;
 height:100%;
 pointer-events:none;
-z-index:200;
+z-index:150;
 display:none;
 }
 
