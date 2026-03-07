@@ -19,7 +19,7 @@ html, body {
 /* ── 레이아웃 ── */
 .overlay {
   width: 400px;
-  height: 1080px;
+  height: 1000px;
   position: relative;
   overflow: hidden;
 }
