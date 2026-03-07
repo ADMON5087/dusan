@@ -1,7 +1,7 @@
 /* ============================================
-   SOOP Balloon Battle v4 - FULL VERSION
-   방송용 400x1000 안정 버전
-============================================ */
+   SOOP Balloon Battle v4
+   COMPLETE STABLE STYLE
+   ============================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
 
@@ -20,7 +20,7 @@ width:400px;
 height:1000px;
 }
 
-/* ───────── 레이아웃 ───────── */
+/* ───────── 기본 레이아웃 ───────── */
 
 .overlay{
 width:400px;
@@ -33,7 +33,7 @@ width:400px;
 height:1000px;
 display:flex;
 flex-direction:column;
-padding:14px 13px;
+padding:14px;
 gap:8px;
 }
 
@@ -51,7 +51,7 @@ box-shadow:3px 3px 8px #c4c8cd,-3px -3px 8px #ffffff;
 
 .top-title{
 text-align:center;
-padding:18px 12px 16px;
+padding:18px 12px;
 border-radius:15px;
 background:#e8ecf0;
 }
@@ -74,7 +74,7 @@ margin-top:5px;
 .winner-card{
 background:#e8ecf0;
 border-radius:15px;
-padding:18px 16px;
+padding:18px;
 text-align:center;
 }
 
@@ -112,7 +112,7 @@ gap:10px;
 .total-box{
 flex:1;
 border-radius:14px;
-padding:18px 8px;
+padding:18px;
 text-align:center;
 background:#e8ecf0;
 }
@@ -256,23 +256,93 @@ color:white;
 }
 
 .bh-label{
-font-size:11px;
-letter-spacing:2px;
+font-size:12px;
 font-weight:700;
 }
 
 .bh-name{
-font-size:20px;
+font-size:22px;
 font-weight:900;
-margin-top:3px;
+margin-top:4px;
 }
 
 .bh-amount{
-font-size:13px;
-margin-top:3px;
+font-size:14px;
+margin-top:4px;
 }
 
-/* ───────── 사이렌 (5분 선두) ───────── */
+/* ───────── 500개 팝업 ───────── */
+
+#bigSupportPopup{
+position:absolute;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%) scale(0);
+background:linear-gradient(135deg,#d02870,#9a1f55);
+color:white;
+padding:32px 40px;
+border-radius:22px;
+text-align:center;
+z-index:300;
+display:none;
+flex-direction:column;
+align-items:center;
+box-shadow:0 15px 45px rgba(0,0,0,0.35);
+}
+
+#bigSupportPopup.popup-show{
+display:flex;
+animation:bigSupportAnim .4s cubic-bezier(.175,.885,.32,1.275) forwards;
+}
+
+@keyframes bigSupportAnim{
+0%{transform:translate(-50%,-50%) scale(.4);opacity:0;}
+100%{transform:translate(-50%,-50%) scale(1);opacity:1;}
+}
+
+/* ───────── milestone 팝업 ───────── */
+
+#milestonePopup{
+position:absolute;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%) scale(0);
+background:linear-gradient(135deg,#ffd700,#ffb300);
+color:#222;
+padding:30px 40px;
+border-radius:20px;
+display:none;
+flex-direction:column;
+align-items:center;
+z-index:320;
+}
+
+#milestonePopup.popup-show{
+display:flex;
+animation:bigSupportAnim .4s forwards;
+}
+
+/* ───────── 리드 체인지 ───────── */
+
+#leadChangePopup{
+position:absolute;
+left:50%;
+top:40%;
+transform:translate(-50%,-50%) scale(0);
+background:#3a5fdf;
+color:white;
+padding:24px 30px;
+border-radius:18px;
+display:none;
+z-index:310;
+}
+
+#leadChangePopup.popup-show{
+display:flex;
+animation:bigSupportAnim .35s forwards;
+}
+
+/* ───────── 5분 선두 사이렌 ───────── */
 
 .siren-bar{
 border-radius:13px;
@@ -292,42 +362,16 @@ background:linear-gradient(90deg,#b02060,#d02870);
 background:linear-gradient(90deg,#3a5fdf,#5b7fff);
 }
 
-/* ───────── 대형 팝업 ───────── */
-
-.popup{
-position:absolute;
-left:50%;
-top:58%;
-transform:translate(-50%,-50%) scale(0);
-z-index:200;
-border-radius:16px;
-padding:22px 28px;
-display:none;
-flex-direction:column;
-align-items:center;
-text-align:center;
-}
-
-.popup.popup-show{
-display:flex;
-animation:popShow .35s cubic-bezier(.175,.885,.32,1.275) forwards;
-}
-
-@keyframes popShow{
-0%{transform:translate(-50%,-50%) scale(0)}
-100%{transform:translate(-50%,-50%) scale(1)}
-}
-
 /* ───────── 컨페티 ───────── */
 
-.confetti-layer{
+#confettiLayer{
 position:absolute;
 top:0;
 left:0;
 width:100%;
 height:100%;
 pointer-events:none;
-z-index:150;
+z-index:200;
 display:none;
 }
 
