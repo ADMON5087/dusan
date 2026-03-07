@@ -1,6 +1,6 @@
 /* ============================================
    SOOP Balloon Battle v4 - styles.css
-   뉴모피즘 라이트 테마 (colA_v3 적용)
+   뉴모피즘 라이트 테마 (1000px 방송용 버전)
    ============================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
@@ -13,7 +13,7 @@ html, body {
   color: #2d2d3a;
   overflow: hidden;
   width: 400px;
-  height: 1080px;
+  height: 1000px;
 }
 
 /* ── 레이아웃 ── */
@@ -26,7 +26,7 @@ html, body {
 
 .panel {
   width: 400px;
-  height: 1080px;
+  height: 1000px;
   background: #e8ecf0;
   display: flex;
   flex-direction: column;
@@ -99,17 +99,15 @@ html, body {
   line-height: 1.25;
 }
 
-/* 격차 텍스트 — 19px 굵고 선명하게 */
 .winner-gap {
   font-size: 19px;
   font-weight: 900;
-  color: #c0306a;   /* 멤버 앞설 때 파란색 */
+  color: #c0306a;
   margin-top: 5px;
   letter-spacing: 0.3px;
   line-height: 1.25;
 }
 
-/* 하두링 앞설 때 핑크 */
 .winner-gap.haduring-lead {
   color: #3a5fdf;
 }
@@ -134,13 +132,11 @@ html, body {
   font-weight: 900;
   color: #4a4580;
   margin-bottom: 5px;
-  line-height: 1.2;
 }
 
 .total-score {
   font-size: 36px;
   font-weight: 900;
-  line-height: 1.1;
 }
 
 .total-box.left  .total-score { color: #d02870; }
@@ -150,7 +146,6 @@ html, body {
   font-size: 12px;
   color: #aaa8cc;
   margin-top: 3px;
-  line-height: 1;
 }
 
 /* ── VS 게이지 ── */
@@ -167,7 +162,6 @@ html, body {
   font-size: 13px;
   font-weight: 700;
   margin-bottom: 8px;
-  line-height: 1.2;
 }
 
 .left-pct  { color: #d02870; }
@@ -201,7 +195,7 @@ html, body {
 
 /* ── 랭킹 박스 ── */
 .ranking-box {
-  flex: 1;          /* 남은 세로 공간 전부 흡수 */
+  flex: 1;
   min-height: 0;
   background: #e8ecf0;
   border-radius: 15px;
@@ -217,19 +211,13 @@ html, body {
   color: #4a4580;
   text-align: center;
   margin-bottom: 8px;
-  letter-spacing: 0.8px;
-  line-height: 1.2;
-  flex-shrink: 0;
 }
 
 .rank-rows {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   gap: 7px;
-  min-height: 0;
-  padding-bottom: 4px;
 }
 
 .rank-row {
@@ -239,13 +227,7 @@ html, body {
   padding: 10px 10px;
   background: #e8ecf0;
   border-radius: 10px;
-  flex-shrink: 0;
   box-shadow: 3px 3px 8px #c4c8cd, -3px -3px 8px #ffffff;
-}
-
-.rank-row.mvp {
-  box-shadow: 3px 3px 8px #c4c8cd, -3px -3px 8px #ffffff,
-              inset 0 0 0 2px rgba(208,40,112,0.35);
 }
 
 .rank-badge {
@@ -259,153 +241,27 @@ html, body {
   justify-content: center;
   font-size: 12px;
   font-weight: 900;
-  flex-shrink: 0;
-  color: #6c6899;
-}
-
-.rank-row.mvp .rank-badge {
-  background: linear-gradient(135deg, #d02870, #b02060);
-  color: #fff;
-  box-shadow: none;
-}
-
-/* MVP 태그: 이름 왼쪽 앞 */
-.mini-tag {
-  font-size: 8px;
-  background: rgba(208,40,112,0.12);
-  border: 1px solid rgba(208,40,112,0.4);
-  color: #d02870;
-  border-radius: 4px;
-  padding: 2px 4px;
-  flex-shrink: 0;
-  font-weight: 700;
 }
 
 .rank-info {
   flex: 1;
-  min-width: 0;
 }
 
 .rank-name {
   font-size: 16px;
   font-weight: 700;
-  color: #2d2d3a;
-  line-height: 1.2;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.rank-bar-bg {
-  height: 6px;
-  background: #dde0e6;
-  border-radius: 3px;
-  margin-top: 4px;
-  overflow: hidden;
-  box-shadow: inset 1px 1px 2px #c4c8cd;
-}
-
-.rank-bar-fill {
-  height: 100%;
-  border-radius: 3px;
-  background: linear-gradient(90deg, #3a5fdf, #5b7fff);
-  transition: width 0.5s ease;
-}
-
-.rank-row.mvp .rank-bar-fill {
-  background: linear-gradient(90deg, #5b7fff, #90aaff);
 }
 
 .rank-score {
   font-size: 16px;
   font-weight: 900;
-  color: #2d2d3a;
-  flex-shrink: 0;
 }
 
-/* ── 큰손 팝업 (랭킹 아래 · 사이렌 바로 위) ── */
-.bighand-popup {
-  flex-shrink: 0;
-  background: linear-gradient(135deg, #d02870, #9a1f55);
-  border-radius: 14px;
-  padding: 15px 14px;
-  text-align: center;
-  box-shadow: 4px 4px 14px rgba(176,32,96,0.45);
-  display: none;   /* JS가 show/hide 제어 */
-}
-
-.bighand-popup.popup-show {
-  display: block;
-  animation: popSlide 0.35s cubic-bezier(0.175,0.885,0.32,1.275) forwards;
-}
-
-@keyframes popSlide {
-  0%   { transform: scaleY(0); opacity: 0; transform-origin: top; }
-  70%  { transform: scaleY(1.05); opacity: 1; }
-  100% { transform: scaleY(1); opacity: 1; }
-}
-
-.bh-label {
-  font-size: 11px;
-  color: rgba(255,255,255,0.85);
-  letter-spacing: 2px;
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-.bh-name {
-  font-size: 20px;
-  font-weight: 900;
-  color: #fff;
-  margin-top: 3px;
-  line-height: 1.2;
-}
-
-.bh-amount {
-  font-size: 13px;
-  color: rgba(255,255,255,0.92);
-  font-weight: 700;
-  margin-top: 3px;
-  line-height: 1.2;
-}
-
-/* ── 사이렌 바 (21px = 1.5×) ── */
-.siren-bar {
-  flex-shrink: 0;
-  border-radius: 13px;
-  padding: 18px 12px;
-  text-align: center;
-  font-size: 21px;
-  font-weight: 900;
-  color: #fff;
-  letter-spacing: 0.2px;
-  line-height: 1.2;
-  display: none;   /* JS가 show/hide 제어 */
-  animation: sirenBlink 1s infinite;
-}
-
-/* 멤버 선두 → 핑크 */
-.siren-bar.member-lead {
-  background: linear-gradient(90deg, #b02060, #d02870);
-  box-shadow: 3px 3px 10px rgba(176,32,96,0.45);
-}
-
-/* 하두링 선두 → 파랑 */
-.siren-bar.haduring-lead {
-  background: linear-gradient(90deg, #3a5fdf, #5b7fff);
-  box-shadow: 3px 3px 10px rgba(58,95,223,0.45);
-}
-
-@keyframes sirenBlink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.65; }
-}
-
-/* ── 팝업 공통 (BIG SUPPORT / MILESTONE / LEAD CHANGE) ── */
+/* ── 팝업 위치 (1000px용 조정) ── */
 .popup {
   position: absolute;
   left: 50%;
-  top: 63%;
+  top: 58%;
   transform: translate(-50%, -50%) scale(0);
   z-index: 200;
   border-radius: 16px;
@@ -414,73 +270,4 @@ html, body {
   display: none;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  pointer-events: none;
-  min-width: 280px;
-}
-
-.popup.popup-show {
-  display: flex;
-  animation: popShow 0.35s cubic-bezier(0.175,0.885,0.32,1.275) forwards;
-}
-
-@keyframes popShow {
-  0%   { transform: translate(-50%,-50%) scale(0); opacity: 0; }
-  70%  { transform: translate(-50%,-50%) scale(1.08); opacity: 1; }
-  100% { transform: translate(-50%,-50%) scale(1); opacity: 1; }
-}
-
-/* BIG SUPPORT (500개+) */
-.big-support-popup {
-  background: linear-gradient(135deg, rgba(148,0,211,0.96), rgba(80,0,180,0.92));
-  border: 2px solid #cc66ff;
-  box-shadow: 0 0 60px rgba(148,0,211,0.6);
-}
-
-.bs-icon   { font-size: 30px; line-height: 1.2; margin-bottom: 4px; }
-.bs-label  { font-size: 24px; font-weight: 900; color: #fff; line-height: 1.2; letter-spacing: 0.5px; white-space: nowrap; }
-.bs-name   { font-size: 40px; font-weight: 900; color: #fff; line-height: 1.1; }
-.bs-amount { font-size: 28px; font-weight: 700; color: rgba(255,255,255,0.92); margin-top: 6px; line-height: 1.2; }
-
-/* MILESTONE (1만개) */
-.milestone-popup {
-  background: linear-gradient(135deg, rgba(217,119,6,0.96), rgba(180,80,0,0.92));
-  border: 2px solid #fbbf24;
-  box-shadow: 0 0 60px rgba(217,119,6,0.6);
-}
-
-.ms-icon   { font-size: 32px; line-height: 1.2; margin-bottom: 4px; }
-.ms-label  { font-size: 26px; font-weight: 900; color: #fff; line-height: 1.2; letter-spacing: 0.5px; }
-.ms-sub    { font-size: 20px; font-weight: 700; color: rgba(255,255,255,0.92); margin-top: 4px; line-height: 1.2; }
-
-/* LEAD CHANGE */
-.lead-change-popup {
-  background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(200,200,255,0.9));
-  border: 2px solid #fff;
-  box-shadow: 0 0 50px rgba(255,255,255,0.4);
-}
-
-.lc-label { font-size: 12px; color: rgba(0,0,80,0.7); letter-spacing: 2px; font-weight: bold; }
-.lc-name  { font-size: 24px; font-weight: bold; color: #000080; }
-.lc-text  { font-size: 12px; color: rgba(0,0,0,0.6); }
-
-/* ── 컨페티 ── */
-.confetti-layer {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  pointer-events: none;
-  z-index: 150;
-  display: none;
-}
-
-.confetti-dot {
-  position: absolute;
-  border-radius: 50%;
-  animation: confettiFall 2.5s ease-in forwards;
-}
-
-@keyframes confettiFall {
-  0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
-  100% { transform: translateY(120vh) rotate(720deg); opacity: 0; }
 }
