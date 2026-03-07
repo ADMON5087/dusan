@@ -99,11 +99,11 @@ html, body {
   line-height: 1.25;
 }
 
-/* 격차 텍스트 — 방송 강조 */
+/* 격차 텍스트 — 19px 굵고 선명하게 */
 .winner-gap {
-  font-size: 21px;
+  font-size: 19px;
   font-weight: 900;
-  color: #ff2d55;
+  color: #c0306a;   /* 멤버 앞설 때 */
   margin-top: 5px;
   letter-spacing: 0.3px;
   line-height: 1.25;
@@ -111,7 +111,7 @@ html, body {
 
 /* 하두링 앞설 때 */
 .winner-gap.haduring-lead {
-  color: #ff007a;
+  color: #3a5fdf;
 }
 }
 
