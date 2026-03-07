@@ -140,11 +140,11 @@ function render(data) {
     gapEl.className   = 'winner-gap';
   } else if (isLeftLeading) {
     // 하두링 선두 → 핑크 색
-    gapEl.textContent = '멤버들보다 +' + formatNumber(gap) + ' 앞서는 중';
+    gapEl.innerHTML = '멤버들보다 <span class="gap-number">+' + formatNumber(gap) + '</span> 앞서는 중';
     gapEl.className   = 'winner-gap';
   } else {
     // 멤버 선두 → 파란 색
-    gapEl.textContent = leftName + '보다 +' + formatNumber(gap) + ' 앞서는 중';
+    gapEl.innerHTML = leftName + '보다 <span class="gap-number">+' + formatNumber(gap) + '</span> 앞서는 중';
     gapEl.className   = 'winner-gap haduring-lead';
   }
 
