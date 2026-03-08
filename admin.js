@@ -41,3 +41,40 @@ async function adjustScore(playerId, direction){
   }
 
 }
+async function resetMatch(){
+
+  if(!confirm("정말 모든 점수를 초기화할까요?")) return;
+
+  const players = [
+    "busky3",
+    "yyssaa33",
+    "rlsk0705",
+    "finepearls",
+    "khl1589",
+    "wkddudrms15"
+  ];
+
+  const scores = {};
+
+  players.forEach(p=>{
+    scores[p] = 0;
+  });
+
+  const { error } = await sbClient
+    .from("match_state")
+    .update({
+      scores: scores
+    })
+    .eq("match_key","galduosanck");
+
+  if(error){
+
+    alert("초기화 실패");
+    console.error(error);
+    return;
+
+  }
+
+  alert("매치 초기화 완료");
+
+}
