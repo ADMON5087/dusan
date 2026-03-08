@@ -1,4 +1,4 @@
-// app.js - SOOP Balloon Battle v4 메인 로직 (두산 시스템 적용)
+// app.js - SOOP Balloon Battle v5 (두산 + 귀인 등장 + 폭죽 + 화면 흔들림)
 
 const sbClient = window.supabase.createClient(
   APP_CONFIG.SUPABASE_URL,
@@ -20,31 +20,97 @@ const MEMBERS = [
 ];
 
 let prevScores = {};
-let prevLeader = null;
-let leaderSince = null;
-let sirenShown = false;
-let milestones = {};
+let prevDusans = {};
 
 function formatNumber(n) {
   return Number(n || 0).toLocaleString('ko-KR');
 }
-
-// ─────────────────────────────
-// 두산 계산 함수
-// ─────────────────────────────
 
 function getDusans(score){
   if(!score) return 0
   return Math.floor((Math.sqrt(8*score+1)-1)/2)
 }
 
-// ─────────────────────────────
-// 메인 렌더
-// ─────────────────────────────
+function makeGoldenConfetti(count = 40) {
 
-function render(data) {
+  const layer = document.getElementById('confettiLayer');
+  if (!layer) return;
 
-  if (!data) return;
+  layer.innerHTML = '';
+
+  const colors = [
+    '#FFD700',
+    '#FFC400',
+    '#FFDF00',
+    '#FFF176'
+  ];
+
+  for (let i = 0; i < count; i++) {
+
+    const dot = document.createElement('div');
+
+    dot.className = 'confetti-dot';
+
+    dot.style.cssText = `
+      left:${Math.random()*100}%;
+      top:${Math.random()*100}%;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      width:${6+Math.random()*10}px;
+      height:${6+Math.random()*10}px;
+      animation-delay:${Math.random()*0.4}s;
+    `;
+
+    layer.appendChild(dot);
+
+  }
+
+  layer.style.display = 'block';
+
+  setTimeout(() => {
+
+    layer.style.display = 'none';
+    layer.innerHTML = '';
+
+  },3000);
+
+}
+
+function shakeScreen(){
+
+  const root = document.body;
+
+  root.classList.add('screen-shake');
+
+  setTimeout(()=>{
+    root.classList.remove('screen-shake')
+  },900)
+
+}
+
+function showPopup(id, duration = 4000) {
+
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  el.style.display = 'flex';
+  el.classList.remove('popup-show');
+
+  void el.offsetWidth;
+
+  el.classList.add('popup-show');
+
+  setTimeout(() => {
+
+    el.classList.remove('popup-show');
+    el.style.display = 'none';
+
+  }, duration);
+
+}
+
+function render(data){
+
+  if(!data) return;
 
   const scores = data.scores || {};
 
@@ -52,9 +118,10 @@ function render(data) {
   const leftDusans = getDusans(leftScore);
 
   let rightScore = 0;
+
   MEMBERS.forEach(m=>{
     rightScore += scores[m.id] || 0;
-  })
+  });
 
   const rightDusans = getDusans(rightScore);
 
@@ -65,78 +132,77 @@ function render(data) {
 
   const leftName = data.left_label || LEFT_LABEL;
 
-  document.getElementById('title').textContent    = data.title || '갈없녀 두산CK';
-  document.getElementById('subtitle').textContent = data.subtitle || '🏔️ 누적 10만개 달성시 장가계';
+  document.getElementById('title').textContent =
+    data.title || '갈없녀 두산CK';
+
+  document.getElementById('subtitle').textContent =
+    data.subtitle || '🏔️ 누적 10만개 달성시 장가계';
+
   document.getElementById('leftLabel').textContent = leftName;
 
   const leftEl  = document.getElementById('leftScore');
   const rightEl = document.getElementById('rightTotal');
 
   leftEl.innerHTML =
-    leftDusans + " 두산<br><span style='font-size:13px'>총합 " +
-    formatNumber(leftScore) + "</span>";
+    leftDusans + " 두산<br><span style='font-size:13px'>총합 "
+    + formatNumber(leftScore) + "</span>";
 
   rightEl.innerHTML =
-    rightDusans + " 두산<br><span style='font-size:13px'>총합 " +
-    formatNumber(rightScore) + "</span>";
+    rightDusans + " 두산<br><span style='font-size:13px'>총합 "
+    + formatNumber(rightScore) + "</span>";
 
   document.getElementById('gaugeLeft').style.width  = leftPct + '%';
   document.getElementById('gaugeRight').style.width = rightPct + '%';
 
-  document.getElementById('leftPct').textContent  = leftName + ' ' + leftPct + '%';
-  document.getElementById('rightPct').textContent = '멤버들 ' + rightPct + '%';
+  document.getElementById('leftPct').textContent  =
+    leftName + ' ' + leftPct + '%';
 
-  const isLeftLeading = leftScore >= rightScore;
-
-  const leader = isLeftLeading ? leftName : '멤버들 총합';
-
-  const gap = Math.abs(leftScore - rightScore);
-
-  const gapEl = document.getElementById('winnerGap');
-
-  document.getElementById('winnerName').textContent = leader;
-
-  if (gap === 0) {
-
-    gapEl.textContent = '동점!';
-    gapEl.className   = 'winner-gap';
-
-  } else if (isLeftLeading) {
-
-    gapEl.innerHTML =
-      '멤버들보다 <span class="gap-number">+' +
-      formatNumber(gap) +
-      '</span> 앞서는 중';
-
-    gapEl.className = 'winner-gap';
-
-  } else {
-
-    gapEl.innerHTML =
-      leftName +
-      '보다 <span class="gap-number">+' +
-      formatNumber(gap) +
-      '</span> 앞서는 중';
-
-    gapEl.className = 'winner-gap haduring-lead';
-  }
+  document.getElementById('rightPct').textContent =
+    '멤버들 ' + rightPct + '%';
 
   renderRanking(scores);
 
-  prevScores = { ...scores };
+  const allPlayers = [{ id: LEFT_ID, label: leftName }, ...MEMBERS];
+
+  allPlayers.forEach(p=>{
+
+    const score = scores[p.id] || 0;
+
+    const dusans = getDusans(score);
+
+    const prev = prevDusans[p.id] || 0;
+
+    if(dusans >= 101 && dusans > prev){
+
+      document.getElementById('bsLabel').textContent = '✨ 귀인 등장';
+      document.getElementById('bsName').textContent  = p.label + '방';
+      document.getElementById('bsAmount').textContent =
+        dusans + ' 두산';
+
+      showPopup('bigSupportPopup',6000);
+
+      makeGoldenConfetti(60);
+
+      shakeScreen();
+
+    }
+
+    prevDusans[p.id] = dusans;
+
+  });
+
+  prevScores = {...scores};
+
 }
 
-// ─────────────────────────────
-// 랭킹
-// ─────────────────────────────
-
-function renderRanking(scores) {
+function renderRanking(scores){
 
   const list = document.getElementById('rankingList');
 
-  const sorted = [...MEMBERS].sort((a,b)=> (scores[b.id]||0)-(scores[a.id]||0));
+  const sorted =
+    [...MEMBERS].sort((a,b)=>(scores[b.id]||0)-(scores[a.id]||0));
 
-  list.innerHTML='';
+  list.innerHTML = '';
 
   sorted.forEach((m,i)=>{
 
@@ -154,34 +220,33 @@ function renderRanking(scores) {
       </div>
       <div class="rank-score">
         ${dusans} 두산<br>
-        <span style="font-size:12px">총합 ${formatNumber(score)}</span>
+        <span style="font-size:12px">
+        총합 ${formatNumber(score)}
+        </span>
       </div>
     `;
 
     list.appendChild(row);
 
-  })
+  });
 
 }
 
-// ─────────────────────────────
-// 데이터 로드
-// ─────────────────────────────
+async function loadInitial(){
 
-async function loadInitial() {
+  const {data,error} =
+    await sbClient
+      .from('match_state')
+      .select('*')
+      .eq('match_key',MATCH_KEY)
+      .single();
 
-  const { data, error } = await sbClient
-    .from('match_state')
-    .select('*')
-    .eq('match_key', MATCH_KEY)
-    .single();
+  if(error){
 
-  if (error) {
-
-    console.error('초기 로드 실패:', error);
+    console.error('초기 로드 실패:',error);
 
     document.getElementById('subtitle').textContent =
-      '⚠️ 데이터 로드 실패 - Supabase 연결 확인';
+      '⚠️ 데이터 로드 실패';
 
     return;
   }
@@ -190,29 +255,23 @@ async function loadInitial() {
 
 }
 
-// ─────────────────────────────
-// realtime
-// ─────────────────────────────
-
-function startRealtime() {
+function startRealtime(){
 
   sbClient
-    .channel('battle-' + MATCH_KEY)
-    .on('postgres_changes', {
-      event: 'UPDATE',
-      schema: 'public',
-      table: 'match_state',
-      filter: `match_key=eq.${MATCH_KEY}`
-    }, payload => {
+    .channel('battle-'+MATCH_KEY)
+    .on('postgres_changes',{
+      event:'UPDATE',
+      schema:'public',
+      table:'match_state',
+      filter:`match_key=eq.${MATCH_KEY}`
+    },payload=>{
+
       render(payload.new);
+
     })
     .subscribe();
 
 }
-
-// ─────────────────────────────
-// 시작
-// ─────────────────────────────
 
 loadInitial();
 startRealtime();
